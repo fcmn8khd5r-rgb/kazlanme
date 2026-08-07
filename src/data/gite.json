@@ -46,7 +46,7 @@
     "$imagePortrait": "Recadrage vertical de la photo d'accueil, servi aux écrans en portrait. Sans lui, un téléphone ne verrait qu'une bande centrale du cadrage paysage. Régénéré par « npm run photos ».",
     "imagePortrait": "01-veranda-portrait.jpg",
     "image": "01-veranda.jpg",
-    "alt": { "fr": "La véranda du gîte, plafond de bois peint en blanc, plantes vertes et fauteuils autour d’une table ronde", "en": "The cottage veranda, white-painted timber ceiling, green plants and chairs around a round table" }
+    "alt": { "fr": "La véranda en bois du gîte : un hamac de coton, deux lanternes allumées, et la vue sur les palmiers, les mornes et la mer au loin", "en": "The cottage’s timber veranda: a cotton hammock, two lit lanterns, and the view over palms, green hills and the sea beyond" }
   },
   "$storyNote": "L'accueil se lit comme une suite de blocs. Chacun déclare sa disposition — texte à gauche, texte à droite, bandeau pleine largeur, mosaïque de trois, ou bloc de texte seul. La règle : jamais deux blocs de même disposition à la suite, jamais un texte sans image ni une image sans texte.",
   "story": [
@@ -98,7 +98,7 @@
       "id": "dehors",
       "layout": "image-right",
       "image": "05-chambre-jardin.jpg",
-      "alt": { "fr": "La chambre sur le jardin, tête de lit en cannage, ventilateur de plafond et porte vitrée", "en": "The garden bedroom, cane headboard, ceiling fan and glazed door" },
+      "alt": { "fr": "La chambre sur le jardin : plancher de bois sombre, lit fait de frais, et une paroi vitrée qui donne sur les bananiers", "en": "The garden bedroom: dark timber floor, freshly made bed, and a glazed wall opening onto banana plants" },
       "eyebrow": { "fr": "Le jardin", "en": "The garden" },
       "title": { "fr": "Une terrasse et trois arbres", "en": "A terrace and three trees" },
       "text": {
@@ -140,7 +140,7 @@
         "image": "05-chambre-jardin.jpg",
         "name": { "fr": "La chambre sur le jardin", "en": "The garden bedroom" },
         "note": { "fr": "Lit 140, accès direct à la terrasse", "en": "140 cm bed, direct access to the terrace" },
-        "alt": { "fr": "La chambre sur le jardin et sa porte vitrée", "en": "The garden bedroom and its glazed door" }
+        "alt": { "fr": "La chambre sur le jardin et sa paroi vitrée ouverte sur la végétation", "en": "The garden bedroom and its glazed wall opening onto the greenery" }
       },
       {
         "image": "07-salle-eau.jpg",

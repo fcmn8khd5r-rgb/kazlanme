@@ -21,11 +21,11 @@ Texte de la licence : <https://unsplash.com/license>
 
 | Fichier | Rôle | Auteur | Source | Licence |
 | --- | --- | --- | --- | --- |
-| `01-veranda.jpg` | Accueil — la véranda | Clay Banks | [unsplash.com/photos/BnDI_MVomAI](https://unsplash.com/photos/BnDI_MVomAI) | Licence Unsplash |
+| `01-veranda.jpg` | Accueil — la véranda | Brooke Balentine | [unsplash.com/photos/zTVGO4IUmJg](https://unsplash.com/photos/zTVGO4IUmJg) | Licence Unsplash |
 | `02-sejour.jpg` | Le séjour et la table | _voir la page source_ | [unsplash.com/photos/GgAU5OaTAlA](https://unsplash.com/photos/GgAU5OaTAlA) | Licence Unsplash |
 | `03-cuisine.jpg` | La cuisine | _voir la page source_ | [unsplash.com/photos/AMHhBiWHQOM](https://unsplash.com/photos/AMHhBiWHQOM) | Licence Unsplash |
 | `04-chambre-bleue.jpg` | La chambre bleue | _voir la page source_ | [unsplash.com/photos/L9GsIbPCXKU](https://unsplash.com/photos/L9GsIbPCXKU) | Licence Unsplash |
-| `05-chambre-jardin.jpg` | La chambre sur le jardin | _voir la page source_ | [unsplash.com/photos/cty6Z4-hzVk](https://unsplash.com/photos/cty6Z4-hzVk) | Licence Unsplash |
+| `05-chambre-jardin.jpg` | La chambre sur le jardin | Marc Wieland | [unsplash.com/photos/RAXD1BlJmSs](https://unsplash.com/photos/RAXD1BlJmSs) | Licence Unsplash |
 | `06-chambre-rotin.jpg` | Détail — lit en rotin | _voir la page source_ | [unsplash.com/photos/jEW4REcKBn0](https://unsplash.com/photos/jEW4REcKBn0) | Licence Unsplash |
 | `07-salle-eau.jpg` | La salle d’eau | _voir la page source_ | [unsplash.com/photos/z5Qyv6um5Ow](https://unsplash.com/photos/z5Qyv6um5Ow) | Licence Unsplash |
 

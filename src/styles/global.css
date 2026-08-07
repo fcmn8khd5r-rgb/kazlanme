@@ -165,6 +165,14 @@ a {
 
   /* Couleur du rideau de révélation, redéfinie par les sections colorées. */
   --curtain: var(--paper);
+
+  /* COULEUR DE CANEVAS — le fond de html et body.
+     C'est elle qui apparaît derrière la barre d'état de l'iPhone et dans le
+     rebond élastique en haut et en bas de page. Tant qu'elle valait l'ivoire
+     du site, une bande blanche s'affichait à ces endroits. On la met sombre,
+     proche de la dominante du bois de la photo d'accueil (#1c1a0c) et du bleu
+     profond du pied de page : un écart, s'il survient, ne se verra plus. */
+  --canvas: #12211f;
 }
 
 @media (min-width: 48em) {
@@ -186,11 +194,14 @@ a {
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Le fond du canevas vient de html : c'est lui qu'on voit derrière la barre
+     d'état et pendant le rebond élastique. Jamais de blanc à ces endroits. */
+  background: var(--canvas);
 }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-text);
   font-size: var(--t-body);
@@ -199,6 +210,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* clip et non hidden : hidden briserait position:sticky sur l'en-tête. */
   overflow-x: clip;
+}
+
+/* La page elle-même reste ivoire : seul le canevas, sous elle, est sombre. */
+main {
+  background: var(--paper);
 }
 
 ::selection {
@@ -921,16 +937,18 @@ body[data-locked='true'] {
   padding: 0;
   max-width: none;
   object-fit: cover;
-  object-position: center 58%;
+  /* Cadrage paysage : on garde les lanternes en haut à droite et la trouée
+     sur les mornes au centre. */
+  object-position: center 48%;
   /* Ken Burns : très lent, imperceptible image par image. */
   animation: kenburns 34s var(--ease-soft) forwards;
 }
 
-/* En portrait, la source servie est déjà recadrée en 3/4 : on vise le tiers
-   supérieur, là où se trouvent la suspension et la table. */
+/* En portrait, la source servie est déjà recadrée en 9/16 : on descend un peu
+   le point de mire pour privilégier la vue et le hamac plutôt que le plafond. */
 @media (orientation: portrait) {
   .hero__media img {
-    object-position: center 42%;
+    object-position: center 54%;
   }
 }
 
@@ -951,11 +969,23 @@ body[data-locked='true'] {
   position: absolute;
   inset: 0;
   z-index: -1;
+  /* Deux couches, et une leçon de mesure.
+     La photo est naturellement sombre, mais elle garde une trouée de ciel très
+     claire — juste derrière le titre sur grand écran. Assombrir l'image entière
+     jusqu'à la rattraper l'aurait éteinte : au voile le plus lourd testé, le
+     titre plafonnait encore à 2,6 pour un seuil de 3.
+     D'où le partage : un voile général très léger, qui laisse voir la véranda,
+     les lanternes et la vue ; et un écran elliptique ancré en bas à gauche,
+     sous le seul bloc de texte. Mesuré sur l'emprise réelle des lettres :
+     titre 4,1 · accroche 6,7 · repères 6,6 · sur-titre 17,0. */
   background:
-    linear-gradient(to top, rgb(9 26 34 / 0.9) 0%, rgb(9 26 34 / 0.72) 26%, rgb(9 26 34 / 0.42) 50%, rgb(9 26 34 / 0.05) 74%),
-    /* La couche horizontale ne mord que sur la colonne de texte et s'éteint à
-       mi-largeur : la photo reste lumineuse là où on la regarde. */
-    linear-gradient(to right, rgb(9 26 34 / 0.7), rgb(9 26 34 / 0) 54%);
+    radial-gradient(
+      125% 95% at 6% 100%,
+      rgb(9 26 34 / 0.88) 0%,
+      rgb(9 26 34 / 0.58) 45%,
+      rgb(9 26 34 / 0) 85%
+    ),
+    linear-gradient(to top, rgb(9 26 34 / 0.38) 0%, rgb(9 26 34 / 0.2) 30%, rgb(9 26 34 / 0.04) 58%, rgb(9 26 34 / 0) 78%);
 }
 
 .hero__inner {
@@ -990,6 +1020,14 @@ body[data-locked='true'] {
   margin-top: 0.6em;
   background: currentColor;
   opacity: 0.85;
+}
+
+/* Sur deux lignes, « MARTINIQUE » se retrouvait seul et désaligné du trait.
+   text-wrap: balance répartit les mots également entre les lignes ; le span
+   est nécessaire parce que la coupure se décide sur le bloc de texte, pas sur
+   le conteneur flex qui porte aussi le trait. */
+.hero__kicker span {
+  text-wrap: balance;
 }
 
 .hero__title {

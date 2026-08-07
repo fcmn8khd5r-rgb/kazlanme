@@ -32,15 +32,36 @@ const PUBLIC_DIR = path.join(ROOT, 'public');
 const MAX_EDGE = 2000;
 const LARGE_EDGE = 2600;
 
-/** Le gîte : intérieurs et extérieurs, tous dans le même registre lumineux. */
+/**
+ * Le gîte : intérieurs et extérieurs, tous dans le même registre.
+ *
+ * @typedef {object} Photo
+ * @property {string}  to        nom du fichier livré
+ * @property {string}  role      libellé pour CREDITS.md
+ * @property {string}  id        identifiant Unsplash
+ * @property {string}  unsplash  URL mémorisée, si la résolution échoue
+ * @property {string}  [author]  auteur, uniquement s'il a été vérifié
+ * @property {number}  [maxEdge] plus grand côté après redimensionnement
+ * @property {{ratio:number, top:number}} [crop]      recadrage paysage
+ * @property {{to:string, ratio:number, maxWidth:number}} [portrait] cadrage vertical
+ * @property {string}  [resolved]     rempli à l'exécution
+ * @property {object}  [portraitInfo] rempli à l'exécution
+ *
+ * @type {Photo[]}
+ */
 const GITE = [
   {
     to: '01-veranda.jpg',
     role: 'Accueil — la véranda',
-    id: 'BnDI_MVomAI',
-    unsplash: 'photo-1773847469674-189153e5e32d',
-    author: 'Clay Banks', // seul auteur vérifié sur la page source
+    id: 'zTVGO4IUmJg',
+    unsplash: 'photo-1741899366204-0d71d5ecff27',
+    author: 'Brooke Balentine', // vérifié sur la page source
     maxEdge: LARGE_EDGE,
+    /* La source est verticale (2600×3921). On en tire DEUX cadrages :
+       le paysage ci-dessous pour les grands écrans, et le portrait pour les
+       téléphones — tous deux extraits de l'original, jamais l'un de l'autre. */
+    crop: { ratio: 3 / 2, top: 900 },
+    portrait: { to: '01-veranda-portrait.jpg', ratio: 9 / 16, maxWidth: 1300 },
   },
   {
     to: '02-sejour.jpg',
@@ -63,8 +84,9 @@ const GITE = [
   {
     to: '05-chambre-jardin.jpg',
     role: 'La chambre sur le jardin',
-    id: 'cty6Z4-hzVk',
-    unsplash: 'photo-1722247480769-de6954b0b20f',
+    id: 'RAXD1BlJmSs',
+    unsplash: 'photo-1774280954999-9758f11f3d41',
+    author: 'Marc Wieland', // vérifié sur la page source
   },
   {
     to: '06-chambre-rotin.jpg',
@@ -113,13 +135,9 @@ const LIEUX = [
 /** Image de partage, dérivée de la photo d'accueil. */
 const OG = { from: '01-veranda.jpg', to: 'og-image.jpg', width: 1200, height: 630 };
 
-/**
- * Recadrage vertical de la photo d'accueil, servi aux écrans en portrait.
- * Un téléphone est deux fois plus haut que large : lui envoyer le cadrage
- * paysage revient à n'en montrer qu'une bande centrale, et le sujet disparaît.
- * On extrait donc la plus grande fenêtre 3/4 que la source autorise, centrée.
- */
-const PORTRAIT = { from: '01-veranda.jpg', to: '01-veranda-portrait.jpg', ratio: 3 / 4 };
+/* Le cadrage portrait de la photo d'accueil est décrit dans le manifeste GITE
+   ci-dessus (clé « portrait ») : il est extrait de la source originale, en même
+   temps que le cadrage paysage. */
 
 /**
  * Résout l'identifiant Unsplash en URL directe. On passe par le point
@@ -166,13 +184,47 @@ async function assertNoMetadata(file) {
   }
 }
 
-async function process(item, dir, workDir) {
+/** Cadrages verticaux produits en cours de route, pour le récapitulatif final. */
+const portraits = [];
+
+async function traiter(item, dir, workDir) {
   const url = await resolveUrl(item.id, item.unsplash);
   const raw = await download(url, path.join(workDir, `${item.id}.jpg`));
+  const source = await sharp(raw).metadata();
+
+  /* Variante portrait, tirée de l'original avant tout recadrage paysage :
+     recadrer un recadrage perdrait de la hauteur pour rien. */
+  if (item.portrait) {
+    const width = Math.min(source.width, Math.round(source.height * item.portrait.ratio));
+    const file = path.join(dir, item.portrait.to);
+    const cut = await sharp(raw)
+      .rotate()
+      .extract({
+        left: Math.round((source.width - width) / 2),
+        top: 0,
+        width,
+        height: source.height,
+      })
+      .resize({ width: item.portrait.maxWidth, withoutEnlargement: true })
+      .jpeg({ quality: 86, mozjpeg: true })
+      .toFile(file);
+    await assertNoMetadata(file);
+    portraits.push({ to: item.portrait.to, ...cut });
+  }
+
   const edge = item.maxEdge ?? MAX_EDGE;
   const target = path.join(dir, item.to);
-  const info = await sharp(raw)
-    .rotate()
+  let pipeline = sharp(raw).rotate();
+
+  if (item.crop) {
+    const height = Math.min(
+      Math.round(source.width / item.crop.ratio),
+      source.height - item.crop.top,
+    );
+    pipeline = pipeline.extract({ left: 0, top: item.crop.top, width: source.width, height });
+  }
+
+  const info = await pipeline
     .resize({ width: edge, height: edge, fit: 'inside', withoutEnlargement: true })
     .jpeg({ quality: 86, mozjpeg: true })
     .toFile(target);
@@ -239,6 +291,20 @@ requête réseau, aucune question de licence.
 }
 
 async function main() {
+  /* --credits : réécrit CREDITS.md et l'image de partage à partir du manifeste,
+     sans retélécharger. Utile quand seule une entrée du manifeste a changé. */
+  if (process.argv.includes('--credits')) {
+    const og = path.join(PUBLIC_DIR, OG.to);
+    await sharp(path.join(GITE_DIR, OG.from))
+      .resize({ width: OG.width, height: OG.height, fit: 'cover', position: 'centre' })
+      .jpeg({ quality: 84, mozjpeg: true })
+      .toFile(og);
+    await assertNoMetadata(og);
+    await writeCredits();
+    console.log('\nCREDITS.md et l’image de partage régénérés depuis le manifeste.\n');
+    return;
+  }
+
   const workDir = await mkdtemp(path.join(tmpdir(), 'gite-photos-'));
   await mkdir(GITE_DIR, { recursive: true });
   await mkdir(LIEUX_DIR, { recursive: true });
@@ -247,7 +313,7 @@ async function main() {
   try {
     console.log('\nLE GÎTE');
     for (const item of GITE) {
-      const info = await process(item, GITE_DIR, workDir);
+      const info = await traiter(item, GITE_DIR, workDir);
       console.log(
         `  ${item.to.padEnd(24)} ${String(info.width).padStart(4)}×${String(info.height).padEnd(4)} ` +
           `${String(Math.round(info.size / 1024)).padStart(4)} ko` + (item.author ? `  © ${item.author}` : ''),
@@ -256,32 +322,22 @@ async function main() {
 
     console.log('\nLES ENVIRONS');
     for (const item of LIEUX) {
-      const info = await process(item, LIEUX_DIR, workDir);
+      const info = await traiter(item, LIEUX_DIR, workDir);
       console.log(
         `  ${item.to.padEnd(24)} ${String(info.width).padStart(4)}×${String(info.height).padEnd(4)} ` +
           `${String(Math.round(info.size / 1024)).padStart(4)} ko` + (item.author ? `  © ${item.author}` : ''),
       );
     }
 
-    /* Cadrage portrait de la photo d'accueil, pour les écrans verticaux. */
-    const source = path.join(GITE_DIR, PORTRAIT.from);
-    const meta = await sharp(source).metadata();
-    const cropWidth = Math.min(meta.width, Math.round(meta.height * PORTRAIT.ratio));
-    const portrait = path.join(GITE_DIR, PORTRAIT.to);
-    const cut = await sharp(source)
-      .extract({
-        left: Math.round((meta.width - cropWidth) / 2),
-        top: 0,
-        width: cropWidth,
-        height: meta.height,
-      })
-      .jpeg({ quality: 86, mozjpeg: true })
-      .toFile(portrait);
-    await assertNoMetadata(portrait);
-    console.log(
-      `\nCADRAGE PORTRAIT\n  ${PORTRAIT.to.padEnd(24)} ${cut.width}×${cut.height}` +
-        `  ${String(Math.round(cut.size / 1024)).padStart(4)} ko`,
-    );
+    if (portraits.length) {
+      console.log('\nCADRAGES PORTRAIT');
+      for (const c of portraits) {
+        console.log(
+          `  ${c.to.padEnd(24)} ${c.width}×${c.height}` +
+            `  ${String(Math.round(c.size / 1024)).padStart(4)} ko`,
+        );
+      }
+    }
 
     const og = path.join(PUBLIC_DIR, OG.to);
     await sharp(path.join(GITE_DIR, OG.from))
