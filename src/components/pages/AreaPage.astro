@@ -19,7 +19,7 @@ const { surroundings } = gite;
     <Picture
       src={img('grande-anse.jpg')}
       alt={t(surroundings.places[1].alt, lang)}
-      widths={[640, 960, 1400, 1920]}
+      widths={[400, 800, 1200, 1600]}
       sizes="100vw"
       formats={['avif', 'webp']}
       fallbackFormat="jpg"
@@ -47,7 +47,7 @@ const { surroundings } = gite;
                 <Picture
                   src={img(place.image)}
                   alt={t(place.alt, lang)}
-                  widths={[480, 720, 1000, 1400]}
+                  widths={[400, 800, 1200, 1600]}
                   sizes="(min-width: 54em) 56vw, 92vw"
                   formats={['avif', 'webp']}
                   fallbackFormat="jpg"

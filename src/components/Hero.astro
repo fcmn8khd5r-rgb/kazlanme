@@ -1,12 +1,20 @@
 ---
 /**
- * Visuel d'ouverture, plein écran. L'image est chargée en priorité — c'est
- * elle que le visiteur attend, tout le reste peut venir après.
+ * Visuel d'ouverture, plein écran.
+ *
+ * DIRECTION ARTISTIQUE — deux cadrages, pas un seul redimensionné.
+ * Un écran de téléphone est deux fois plus haut que large ; y plaquer une
+ * photo panoramique en `cover` revient à n'en montrer qu'une bande centrale,
+ * et le sujet disparaît. Les écrans portrait reçoivent donc une version
+ * recadrée en 3/4, tirée de la même photo.
+ *
+ * C'est pour cela que le <picture> est écrit à la main : le composant
+ * <Picture> d'Astro sert le même cadrage à tout le monde.
  */
-import { Picture } from 'astro:assets';
 import gite from '../data/gite.json';
 import { t, ui, route, type Lang } from '../i18n';
 import { img } from '../lib/images';
+import { sourceSets, fallback } from '../lib/srcset';
 
 interface Props {
   lang: Lang;
@@ -15,26 +23,36 @@ interface Props {
 const { lang } = Astro.props;
 const home = route('home', lang);
 
-const facts = [
-  t(gite.identity.classification, lang),
-  t(gite.capacity.summary, lang),
-];
+const paysage = img(gite.hero.image);
+const portrait = img(gite.hero.imagePortrait ?? gite.hero.image);
+
+/* Le portrait plafonne à sa largeur réelle (1300 px) : au-delà on agrandirait. */
+const sourcesPortrait = await sourceSets(portrait, { widths: [400, 800, 1200], quality: 72 });
+const sourcesPaysage = await sourceSets(paysage, { quality: 72 });
+const repli = await fallback(paysage, 1200, 72);
+
+const facts = [t(gite.identity.classification, lang), t(gite.capacity.summary, lang)];
 ---
 
 <section class="hero" id="top">
   <div class="hero__media">
-    <Picture
-      src={img(gite.hero.image)}
-      alt={t(gite.hero.alt, lang)}
-      widths={[640, 960, 1400, 1920, 2400]}
-      sizes="100vw"
-      formats={['avif', 'webp']}
-      fallbackFormat="jpg"
-      quality={78}
-      loading="eager"
-      fetchpriority="high"
-      decoding="sync"
-    />
+    <picture>
+      {
+        sourcesPortrait.map((source) => (
+          <source media="(orientation: portrait)" type={source.type} srcset={source.srcset} sizes="100vw" />
+        ))
+      }
+      {sourcesPaysage.map((source) => <source type={source.type} srcset={source.srcset} sizes="100vw" />)}
+      <img
+        src={repli.src}
+        width={repli.width}
+        height={repli.height}
+        alt={t(gite.hero.alt, lang)}
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      />
+    </picture>
   </div>
   <div class="hero__veil" aria-hidden="true"></div>
 

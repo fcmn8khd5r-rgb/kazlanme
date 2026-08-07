@@ -114,6 +114,14 @@ const LIEUX = [
 const OG = { from: '01-veranda.jpg', to: 'og-image.jpg', width: 1200, height: 630 };
 
 /**
+ * Recadrage vertical de la photo d'accueil, servi aux écrans en portrait.
+ * Un téléphone est deux fois plus haut que large : lui envoyer le cadrage
+ * paysage revient à n'en montrer qu'une bande centrale, et le sujet disparaît.
+ * On extrait donc la plus grande fenêtre 3/4 que la source autorise, centrée.
+ */
+const PORTRAIT = { from: '01-veranda.jpg', to: '01-veranda-portrait.jpg', ratio: 3 / 4 };
+
+/**
  * Résout l'identifiant Unsplash en URL directe. On passe par le point
  * /download, qui redirige vers images.unsplash.com pour les photos sous
  * licence libre — et refuse celles sous Unsplash+.
@@ -255,6 +263,26 @@ async function main() {
       );
     }
 
+    /* Cadrage portrait de la photo d'accueil, pour les écrans verticaux. */
+    const source = path.join(GITE_DIR, PORTRAIT.from);
+    const meta = await sharp(source).metadata();
+    const cropWidth = Math.min(meta.width, Math.round(meta.height * PORTRAIT.ratio));
+    const portrait = path.join(GITE_DIR, PORTRAIT.to);
+    const cut = await sharp(source)
+      .extract({
+        left: Math.round((meta.width - cropWidth) / 2),
+        top: 0,
+        width: cropWidth,
+        height: meta.height,
+      })
+      .jpeg({ quality: 86, mozjpeg: true })
+      .toFile(portrait);
+    await assertNoMetadata(portrait);
+    console.log(
+      `\nCADRAGE PORTRAIT\n  ${PORTRAIT.to.padEnd(24)} ${cut.width}×${cut.height}` +
+        `  ${String(Math.round(cut.size / 1024)).padStart(4)} ko`,
+    );
+
     const og = path.join(PUBLIC_DIR, OG.to);
     await sharp(path.join(GITE_DIR, OG.from))
       .resize({ width: OG.width, height: OG.height, fit: 'cover', position: 'centre' })
@@ -264,7 +292,8 @@ async function main() {
 
     await writeCredits();
     console.log(
-      `\n${GITE.length} photos du gîte + ${LIEUX.length} des environs + l’image de partage.` +
+      `\n${GITE.length} photos du gîte + ${LIEUX.length} des environs, ` +
+        `le cadrage portrait et l’image de partage.` +
         `\nAucune métadonnée, aucune position GPS. CREDITS.md mis à jour.\n`,
     );
   } finally {

@@ -214,79 +214,128 @@ const jsonLd = {
           }
         }
 
-        /* Filet de sécurité : un élément resté caché alors qu'il occupe
-           l'écran signale que l'observateur ne l'a pas vu. On l'affiche
-           plutôt que de laisser un trou dans la page. */
-        addEventListener(
-          'scroll',
-          () => {
-            for (const element of revealables) {
-              if (element.dataset.shown !== undefined) continue;
-              const box = element.getBoundingClientRect();
-              if (box.top < window.innerHeight && box.bottom > 0) {
-                show(element);
-                shower.unobserve(element);
-              }
+        const rattraper = (racine: ParentNode) => {
+          for (const element of racine.querySelectorAll<HTMLElement>('.reveal')) {
+            if (element.dataset.shown !== undefined) continue;
+            const box = element.getBoundingClientRect();
+            if (box.top < window.innerHeight && box.bottom > 0) {
+              show(element);
+              shower.unobserve(element);
             }
-          },
-          { passive: true },
-        );
+          }
+        };
+
+        /* Filet de sécurité, sans écouteur de défilement.
+
+           Les sections portent `content-visibility: auto` : tant qu'une section
+           est ignorée, son contenu n'est pas rendu et l'observateur ne peut pas
+           le voir. Le moment exact où elle se met à exister est celui où sa
+           taille change — un ResizeObserver s'en aperçoit donc précisément,
+           là où un observateur d'intersection peut passer à côté.
+
+           Une passe au chargement complète le dispositif pour ce qui est déjà
+           à l'écran. */
+        const veille = new ResizeObserver((entries) => {
+          for (const entry of entries) rattraper(entry.target);
+        });
+        document.querySelectorAll('.section').forEach((section) => veille.observe(section));
+
+        addEventListener('load', () => rattraper(document));
       } else {
         revealables.forEach(show);
       }
 
       /* --------------------------------------------------------------
          4. Parallaxe des bandeaux pleine largeur.
-         Boucle d'animation armée seulement quand un bandeau est visible :
-         aucun calcul quand ils sont hors champ. Le déplacement est déduit
-         du débordement réel du média, jamais d'une valeur devinée.
+
+         Aucun écouteur de défilement : une boucle d'animation tourne
+         uniquement tant qu'un bandeau est à l'écran, et s'arrête d'elle-même
+         sinon. Le seul style écrit est un translate3d — jamais `top`, jamais
+         `background-position`. Sous 768 px, rien du tout.
          -------------------------------------------------------------- */
       const bands = [...document.querySelectorAll<HTMLElement>('.band')];
+      const wide = window.matchMedia('(min-width: 48.0625em)');
+      const still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      if (bands.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (bands.length && !still.matches) {
         const visible = new Set<HTMLElement>();
-        let ticking = false;
+        const last = new WeakMap<HTMLElement, number>();
+        let running = false;
 
-        const place = () => {
-          for (const band of visible) {
-            const media = band.querySelector<HTMLElement>('.band__media');
-            if (!media) continue;
-            const room = Math.max(0, (media.offsetHeight - band.offsetHeight) / 2);
-            if (room < 1) {
-              media.style.transform = '';
-              continue;
-            }
-            const box = band.getBoundingClientRect();
-            /* -1 quand le bandeau entre par le bas, +1 quand il sort par le haut. */
-            const progress = (box.top + box.height / 2 - window.innerHeight / 2) /
-              ((window.innerHeight + box.height) / 2);
-            const clamped = Math.max(-1, Math.min(1, progress));
-            media.style.transform = `translate3d(0, ${(-clamped * room).toFixed(2)}px, 0)`;
-          }
-          ticking = false;
+        const place = (band: HTMLElement) => {
+          const media = band.querySelector<HTMLElement>('.band__media');
+          if (!media) return;
+          const room = Math.max(0, (media.offsetHeight - band.offsetHeight) / 2);
+          if (room < 1) return;
+
+          const box = band.getBoundingClientRect();
+          /* -1 quand le bandeau entre par le bas, +1 quand il sort par le haut. */
+          const progress =
+            (box.top + box.height / 2 - window.innerHeight / 2) /
+            ((window.innerHeight + box.height) / 2);
+          const shift = -Math.max(-1, Math.min(1, progress)) * room;
+
+          /* On n'écrit dans le style que si la valeur a bougé : au repos, la
+             boucle ne provoque plus aucune recomposition. */
+          if (Math.abs((last.get(media) ?? NaN) - shift) < 0.15) return;
+          last.set(media, shift);
+          media.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0)`;
         };
 
-        const request = () => {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(place);
+        const frame = () => {
+          if (!visible.size || !wide.matches) {
+            running = false;
+            return;
+          }
+          for (const band of visible) place(band);
+          requestAnimationFrame(frame);
+        };
+
+        const start = () => {
+          if (running || !visible.size || !wide.matches) return;
+          running = true;
+          requestAnimationFrame(frame);
         };
 
         const gate = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
-              if (entry.isIntersecting) visible.add(entry.target as HTMLElement);
-              else visible.delete(entry.target as HTMLElement);
+              const band = entry.target as HTMLElement;
+              const media = band.querySelector<HTMLElement>('.band__media');
+              if (entry.isIntersecting) {
+                visible.add(band);
+                /* will-change seulement pendant la traversée de l'écran. */
+                if (media && wide.matches) media.style.willChange = 'transform';
+              } else {
+                visible.delete(band);
+                if (media) {
+                  media.style.willChange = '';
+                  media.style.transform = '';
+                  last.delete(media);
+                }
+              }
             }
-            if (visible.size) request();
+            start();
           },
           { rootMargin: '15% 0px' },
         );
 
         bands.forEach((band) => gate.observe(band));
-        addEventListener('scroll', request, { passive: true });
-        addEventListener('resize', request, { passive: true });
-        request();
+
+        /* Passage sous le seuil : on efface tout et on laisse la CSS reprendre. */
+        wide.addEventListener('change', () => {
+          if (!wide.matches) {
+            for (const band of bands) {
+              const media = band.querySelector<HTMLElement>('.band__media');
+              if (!media) continue;
+              media.style.transform = '';
+              media.style.willChange = '';
+              last.delete(media);
+            }
+          } else start();
+        });
+
+        start();
       }
     </script>
   </body>

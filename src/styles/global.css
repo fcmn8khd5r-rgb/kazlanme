@@ -162,6 +162,9 @@ a {
 
   --shadow-sm: 0 1px 2px rgb(18 48 61 / 0.06), 0 6px 18px -12px rgb(18 48 61 / 0.28);
   --shadow: 0 2px 4px rgb(18 48 61 / 0.05), 0 22px 48px -30px rgb(18 48 61 / 0.42);
+
+  /* Couleur du rideau de révélation, redéfinie par les sections colorées. */
+  --curtain: var(--paper);
 }
 
 @media (min-width: 48em) {
@@ -278,23 +281,38 @@ body {
 .section {
   padding-block: var(--section-y);
   position: relative;
+  /* Le navigateur saute la mise en page et la peinture des sections hors
+     écran. « auto » lui fait mémoriser la hauteur réelle après le premier
+     rendu ; la valeur de repli ne sert donc qu'au tout premier passage.
+
+     1300 px n'est pas un chiffre rond choisi au hasard : c'est la hauteur
+     moyenne mesurée des sections de ce site sur un écran de téléphone (elles
+     vont de 630 à 2140 px). Avec 60vh, l'estimation était 61 % trop basse et
+     la hauteur du document changeait sous le doigt pendant le défilement. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1300px;
 }
 
 .section--tight {
   padding-block: calc(var(--section-y) * 0.62);
 }
 
+/* --curtain : la couleur du rideau qui découvre les photos. Elle doit être
+   celle du fond de la section, sinon le panneau se voit avant de s'ouvrir. */
 .section--mist {
   background: var(--paper-2);
+  --curtain: var(--paper-2);
 }
 
 .section--sea {
   background: var(--paper-3);
+  --curtain: var(--paper-3);
 }
 
 .section--deep {
   background: var(--deep);
   color: var(--ink-onDark);
+  --curtain: var(--deep);
 }
 
 .section--deep .eyebrow {
@@ -479,8 +497,11 @@ h3 {
   margin-top: 2rem;
 }
 
-/* Lien souligné à l'animation discrète. */
+/* Lien souligné à l'animation discrète.
+   Le trait est un pseudo-élément qu'on met à l'échelle : animer
+   `background-size` obligerait à repeindre le fond à chaque image. */
 .link {
+  position: relative;
   font-family: var(--font-display);
   font-size: 0.9rem;
   font-weight: 600;
@@ -489,17 +510,29 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding-bottom: 2px;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 100% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 320ms var(--ease), color 260ms var(--ease);
+  padding-bottom: 3px;
+  transition: color 260ms var(--ease);
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform 320ms var(--ease);
 }
 
 .link:hover {
   color: var(--deep);
-  background-size: 0% 1px;
+}
+
+.link:hover::after {
+  transform: scaleX(0);
 }
 
 .link svg {
@@ -637,11 +670,13 @@ h3 {
   z-index: -1;
 }
 
-/* Une fois défilé : fond clair, léger filet. */
+/* Une fois défilé : fond clair, léger filet.
+   Pas de backdrop-filter : un flou d'arrière-plan sur un en-tête collant
+   oblige le navigateur à recomposer la zone à chaque image de défilement.
+   C'est l'un des postes les plus coûteux sur iOS, pour un effet que personne
+   ne remarque. Un fond opaque coûte zéro. */
 .header[data-mode='solid'] {
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  backdrop-filter: saturate(160%) blur(12px);
+  background: var(--paper);
   color: var(--deep);
   box-shadow: 0 1px 0 var(--line);
 }
@@ -849,8 +884,10 @@ body[data-locked='true'] {
 
 .hero {
   position: relative;
-  /* dvh, pas vh : sur mobile la barre d'adresse mange le bas de l'écran. */
-  min-height: 100svh;
+  /* 100vh d'abord, comme repli pour les navigateurs anciens ; 100dvh ensuite,
+     qui seul suit la barre d'adresse mobile et évite qu'une bande de page
+     apparaisse sous l'image quand elle se rétracte. */
+  min-height: 100vh;
   min-height: 100dvh;
   /* Le héros remonte sous l'en-tête collant, qui est transparent au sommet. */
   margin-top: calc(-1 * var(--header-total));
@@ -865,16 +902,32 @@ body[data-locked='true'] {
   position: absolute;
   inset: 0;
   z-index: -2;
+  margin: 0;
+  padding: 0;
   line-height: 0;
 }
 
+/* L'image remplit le cadre entier, sans marge ni interligne hérités : c'est
+   ce qui garantit qu'aucun liseré de page n'apparaisse sur les bords. */
 .hero__media img {
+  display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: none;
   object-fit: cover;
   object-position: center 58%;
   /* Ken Burns : très lent, imperceptible image par image. */
   animation: kenburns 34s var(--ease-soft) forwards;
+}
+
+/* En portrait, la source servie est déjà recadrée en 3/4 : on vise le tiers
+   supérieur, là où se trouvent la suspension et la table. */
+@media (orientation: portrait) {
+  .hero__media img {
+    object-position: center 42%;
+  }
 }
 
 @keyframes kenburns {
@@ -1038,6 +1091,60 @@ body[data-locked='true'] {
   100% {
     transform: scaleY(1);
     opacity: 0;
+  }
+}
+
+/* Sur un téléphone, tout le bloc d'ouverture doit tenir dans l'écran visible,
+   sans défilement — y compris sur un iPhone SE (375 × 667), le plus court des
+   appareils courants. On resserre donc le rythme vertical plutôt que de
+   laisser le contenu déborder sous le pli. */
+@media (max-width: 48em) {
+  .hero__inner {
+    padding-top: calc(var(--header-total) + 1.5rem);
+    padding-bottom: calc(2.25rem + var(--safe-bottom));
+  }
+
+  .hero__kicker {
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+  }
+
+  .hero__kicker::before {
+    width: 1.5rem;
+  }
+
+  .hero__tagline {
+    margin-top: 0.95rem;
+    font-size: 1.02rem;
+    line-height: 1.45;
+    max-width: 27ch;
+  }
+
+  .hero__facts {
+    margin-top: 1.15rem;
+    gap: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .hero .btn-row {
+    margin-top: 1.5rem;
+    gap: 0.6rem;
+  }
+
+  .hero .btn {
+    padding: 0.85rem 1.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Écrans très courts en paysage (téléphone couché) : le texte ne tiendrait
+   pas, on rend la main au défilement plutôt que de rogner le contenu. */
+@media (max-height: 32em) and (orientation: landscape) {
+  .hero {
+    min-height: 34rem;
   }
 }
 
@@ -1225,7 +1332,19 @@ body[data-locked='true'] {
   top: calc(-1 * var(--band-room, 7svh));
   bottom: calc(-1 * var(--band-room, 7svh));
   z-index: -2;
-  will-change: transform;
+  /* Pas de will-change permanent : il forcerait une couche graphique de la
+     taille de l'écran en permanence. C'est le script qui le pose à l'entrée
+     du bandeau et le retire à sa sortie. */
+}
+
+/* Sous 768 px, aucun parallaxe : la réserve verticale ne sert plus à rien et
+   c'est autant de composition en moins pendant le défilement. */
+@media (max-width: 48em) {
+  .band__media {
+    top: 0;
+    bottom: 0;
+    transform: none !important;
+  }
 }
 
 .band__media img {
@@ -2011,16 +2130,25 @@ body[data-locked='true'] {
 }
 
 .contact-line a {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 300ms var(--ease);
-  padding-bottom: 2px;
+  position: relative;
+  padding-bottom: 3px;
 }
 
-.contact-line a:hover {
-  background-size: 100% 1px;
+.contact-line a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 300ms var(--ease);
+}
+
+.contact-line a:hover::after {
+  transform: scaleX(1);
 }
 
 /* ------------------------------------------------------- 18. environs */
@@ -2421,29 +2549,39 @@ body[data-locked='true'] {
     opacity 620ms var(--ease-soft),
     transform var(--reveal-ms) var(--ease-soft);
   transition-delay: calc(var(--i, 0) * var(--stagger));
-  will-change: transform, opacity;
 }
 
 .js .reveal[data-shown] {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 
-/* Images : le masque s'ouvre de haut en bas pendant que le cadrage se détend.
-   C'est le mouvement qu'on remarque le moins et qu'on ressent le plus. */
+/* Images : un rideau glisse vers le bas et découvre la photo, pendant que le
+   cadrage se détend.
+   Le rideau est un panneau opaque qu'on rétrécit — donc une animation de
+   `transform` seule. La version précédente animait `clip-path` : joli, mais
+   c'est une propriété qui repasse par la peinture à chaque image, et qui
+   surtout rendait l'élément invisible à l'observateur chargé de le révéler.
+   Ici rien de tel : la boîte ne change jamais, seul un panneau se contracte. */
 .js .reveal--media {
   transform: none;
 }
 
-.js .reveal--media .frame {
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path var(--reveal-ms) var(--ease-soft);
+.js .reveal--media .frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--curtain, var(--paper));
+  transform-origin: bottom;
+  transform: scaleY(1);
+  transition: transform var(--reveal-ms) var(--ease-soft);
   transition-delay: calc(var(--i, 0) * var(--stagger));
+  pointer-events: none;
 }
 
-.js .reveal--media[data-shown] .frame {
-  clip-path: inset(0 0 0 0);
+.js .reveal--media[data-shown] .frame::after {
+  transform: scaleY(0);
 }
 
 .js .reveal--media img {
@@ -2483,9 +2621,11 @@ body[data-locked='true'] {
     transform: none;
   }
 
-  .js .reveal--media .frame,
+  .js .reveal--media .frame::after {
+    transform: scaleY(0);
+  }
+
   .js .reveal--media img {
-    clip-path: none;
     transform: none;
   }
 
@@ -2556,10 +2696,12 @@ body[data-locked='true'] {
     background: #fff;
   }
 
-  .reveal,
-  .reveal .frame {
+  .reveal {
     opacity: 1 !important;
-    clip-path: none !important;
     transform: none !important;
+  }
+
+  .reveal--media .frame::after {
+    display: none !important;
   }
 }

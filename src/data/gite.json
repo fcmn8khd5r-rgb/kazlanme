@@ -43,6 +43,8 @@
     "coordinatesNote": { "fr": "Coordonnées approximatives. L’adresse exacte vous est envoyée avec le plan d’accès, à la confirmation.", "en": "Approximate coordinates. The exact address is sent with directions once your stay is confirmed." }
   },
   "hero": {
+    "$imagePortrait": "Recadrage vertical de la photo d'accueil, servi aux écrans en portrait. Sans lui, un téléphone ne verrait qu'une bande centrale du cadrage paysage. Régénéré par « npm run photos ».",
+    "imagePortrait": "01-veranda-portrait.jpg",
     "image": "01-veranda.jpg",
     "alt": { "fr": "La véranda du gîte, plafond de bois peint en blanc, plantes vertes et fauteuils autour d’une table ronde", "en": "The cottage veranda, white-painted timber ceiling, green plants and chairs around a round table" }
   },

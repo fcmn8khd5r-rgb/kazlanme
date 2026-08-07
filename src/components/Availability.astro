@@ -144,7 +144,14 @@ const names = weekdayNames(lang);
       });
     });
 
-    addEventListener('resize', render, { passive: true });
+    /* Un ResizeObserver plutôt qu'un écouteur de redimensionnement.
+       La section porte `content-visibility: auto` : au moment où ce script
+       s'exécute, son contenu n'est pas encore mis en page et la grille ne
+       connaît pas son nombre de colonnes. L'observateur se déclenche dès que
+       la mise en page a réellement lieu — puis à chaque changement de taille.
+       On réagit ainsi à un fait, pas à une supposition sur le calendrier des
+       événements. */
+    new ResizeObserver(() => render()).observe(wrap);
     render();
 
     /* --------------------------------------------------------------

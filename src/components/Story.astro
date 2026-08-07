@@ -43,12 +43,16 @@ const alt = t(block.alt, lang);
         <Picture
           src={source}
           alt={alt}
-          widths={[640, 960, 1400, 1920, 2400]}
+          widths={[400, 800, 1200, 1600]}
           sizes="100vw"
           formats={['avif', 'webp']}
           fallbackFormat="jpg"
-          quality={76}
+          {/* Le bandeau est vu à travers un voile sombre et porte une phrase
+              par-dessus : le détail fin y est invisible. Une qualité basse
+              divise son poids par deux sans différence perceptible. */}
+          quality={52}
           loading="lazy"
+          fetchpriority="low"
         />
       </div>
       <div class="band__veil" aria-hidden="true" />
@@ -65,7 +69,7 @@ const alt = t(block.alt, lang);
           <Picture
             src={source}
             alt={alt}
-            widths={[480, 720, 1000, 1400]}
+            widths={[400, 800, 1200, 1600]}
             sizes="(min-width: 52em) 58vw, 92vw"
             formats={['avif', 'webp']}
             fallbackFormat="jpg"

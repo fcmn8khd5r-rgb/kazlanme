@@ -24,3 +24,6 @@ Thumbs.db
 npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# navigateur téléchargé pour les audits Lighthouse
+chrome/
