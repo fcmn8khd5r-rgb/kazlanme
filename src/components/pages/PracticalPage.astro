@@ -1,0 +1,130 @@
+---
+/** INFOS PRATIQUES — quatre colonnes de faits, coupées par une image. */
+import { Picture } from 'astro:assets';
+import gite from '../../data/gite.json';
+import { t, ui, type Lang } from '../../i18n';
+import { img } from '../../lib/images';
+import CtaStrip from '../CtaStrip.astro';
+import Icon from '../Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { practical, location, contact } = gite;
+
+/* La page couperait sur un mur de listes : on glisse une image après les deux
+   premières colonnes, et le contact ferme la page. */
+const firstHalf = practical.sections.slice(0, 2);
+const secondHalf = practical.sections.slice(2);
+---
+
+<section class="pagehead">
+  <div class="pagehead__media">
+    <Picture
+      src={img('petite-anse.jpg')}
+      alt={t(gite.surroundings.places[2].alt, lang)}
+      widths={[640, 960, 1400, 1920]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      quality={76}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="pagehead__veil" aria-hidden="true"></div>
+  <div class="shell">
+    <span class="eyebrow">{t(practical.eyebrow, lang)}</span>
+    <h1>{t(practical.title, lang)}</h1>
+    <p>{t(practical.intro, lang)}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="info-grid">
+      {
+        firstHalf.map((group, index) => (
+          <div class="info reveal reveal--side" style={`--i:${index}`}>
+            <h2>{t(group.title, lang)}</h2>
+            <dl>
+              {group.items.map((item) => (
+                <div>
+                  <dt>{t(item.label, lang)}</dt>
+                  <dd>{t(item.value, lang)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--mist section--tight">
+  <div class="shell">
+    <div class="story story--right">
+      <div class="story__media reveal reveal--media">
+        <div class="frame frame--3x2 zoom">
+          <Picture
+            src={img('01-veranda.jpg')}
+            alt={t(gite.hero.alt, lang)}
+            widths={[480, 720, 1000, 1400]}
+            sizes="(min-width: 52em) 58vw, 92vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={78}
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div class="story__body reveal reveal--side" style="--i:1">
+        <span class="eyebrow">{ui('contact', lang)}</span>
+        <h2>{contact.hostName}</h2>
+        <p>{t(contact.hostRole, lang)}</p>
+        <p class="contact-line">
+          <Icon name="mail" />
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </p>
+        <p class="contact-line">
+          <Icon name="phone" />
+          <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+        </p>
+        <p class="contact-line">
+          <Icon name="pin" />
+          <a href={location.mapLink} rel="noopener noreferrer" target="_blank">
+            {t(location.mapLinkLabel, lang)}
+          </a>
+        </p>
+        <p class="note">{t(location.coordinatesNote, lang)}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="info-grid">
+      {
+        secondHalf.map((group, index) => (
+          <div class="info reveal reveal--side" style={`--i:${index}`}>
+            <h2>{t(group.title, lang)}</h2>
+            <dl>
+              {group.items.map((item) => (
+                <div>
+                  <dt>{t(item.label, lang)}</dt>
+                  <dd>{t(item.value, lang)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<CtaStrip lang={lang} />

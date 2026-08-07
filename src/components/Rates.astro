@@ -1,0 +1,113 @@
+---
+/** Les tarifs. Deux saisons, ce qui est compris, les conditions — et une image. */
+import { Picture } from 'astro:assets';
+import gite from '../data/gite.json';
+import { t, ui, money, type Lang } from '../i18n';
+import { img } from '../lib/images';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { rates, capacity } = gite;
+const c = rates.conditions;
+---
+
+<section class="section section--sea" id="tarifs">
+  <div class="shell">
+    <SectionHead eyebrow={t(rates.eyebrow, lang)} title={t(rates.title, lang)} />
+
+    <div class="rates">
+      <div>
+        <div class="season-grid">
+          {
+            rates.seasons.map((season, index) => (
+              <article
+                class:list={['season', season.id === 'haute' && 'season--high', 'reveal', 'reveal--side']}
+                style={`--i:${index}`}
+              >
+                <p class="season__label">{t(season.label, lang)}</p>
+                <p class="season__period">{t(season.period, lang)}</p>
+                <p class="season__price">
+                  <b>{money(season.weeklyPrice, lang)}</b>
+                  <span>{ui('perWeek', lang)}</span>
+                </p>
+                <p class="season__night">
+                  {money(season.nightlyPrice, lang)} {ui('perNight', lang)} · {ui('minStay', lang)}{' '}
+                  {ui('nights', lang, capacity.minNights).toLowerCase()}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+
+        <div class="card-soft reveal reveal--side" style="--i:1; margin-top: 1.15rem;">
+          <h3>{ui('conditions', lang)}</h3>
+          <dl class="spec">
+            <div>
+              <dt>{ui('deposit', lang)}</dt>
+              <dd>{t(c.depositPercent, lang)}</dd>
+            </div>
+            <div>
+              <dt>{ui('balance', lang)}</dt>
+              <dd>{ui('balanceValue', lang, c.balanceDueDays)}</dd>
+            </div>
+            <div>
+              <dt>{ui('securityDeposit', lang)}</dt>
+              <dd>{t(c.securityDeposit, lang)}</dd>
+            </div>
+            <div>
+              <dt>{ui('freeCancellation', lang)}</dt>
+              <dd>{ui('freeCancellationValue', lang, c.cancellationFreeDays)}</dd>
+            </div>
+            <div>
+              <dt>{ui('payment', lang)}</dt>
+              <dd>{t(c.payment, lang)}</dd>
+            </div>
+            <div>
+              <dt>{t(rates.touristTax.label, lang)}</dt>
+              <dd>{t(rates.touristTax.amount, lang)}</dd>
+            </div>
+          </dl>
+          <p class="note">{t(rates.touristTax.note, lang)}</p>
+        </div>
+
+        <p class="note reveal reveal--side">{t(rates.note, lang)}</p>
+      </div>
+
+      <div>
+        <div class="reveal reveal--media">
+          <div class="frame frame--4x3 zoom">
+            <Picture
+              src={img(rates.image)}
+              alt={t(rates.alt, lang)}
+              widths={[420, 640, 900, 1200]}
+              sizes="(min-width: 60em) 38vw, 92vw"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              quality={78}
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="card-soft reveal reveal--side" style="margin-top: 1.15rem;">
+          <h3>{ui('included', lang)}</h3>
+          <ul class="aside-list">
+            {
+              t(rates.included, lang).map((item: string) => (
+                <li>
+                  <Icon name="check" />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

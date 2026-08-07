@@ -1,0 +1,57 @@
+---
+/**
+ * Visuel d'ouverture, plein écran. L'image est chargée en priorité — c'est
+ * elle que le visiteur attend, tout le reste peut venir après.
+ */
+import { Picture } from 'astro:assets';
+import gite from '../data/gite.json';
+import { t, ui, route, type Lang } from '../i18n';
+import { img } from '../lib/images';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const home = route('home', lang);
+
+const facts = [
+  t(gite.identity.classification, lang),
+  t(gite.capacity.summary, lang),
+];
+---
+
+<section class="hero" id="top">
+  <div class="hero__media">
+    <Picture
+      src={img(gite.hero.image)}
+      alt={t(gite.hero.alt, lang)}
+      widths={[640, 960, 1400, 1920, 2400]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      quality={78}
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+    />
+  </div>
+  <div class="hero__veil" aria-hidden="true"></div>
+
+  <div class="shell hero__inner">
+    <span class="hero__kicker">{t(gite.identity.kicker, lang)}</span>
+    <h1 class="hero__title">{gite.identity.name}</h1>
+    <p class="hero__tagline">{t(gite.identity.tagline, lang)}</p>
+
+    <ul class="hero__facts">
+      {facts.map((fact) => <li>{fact}</li>)}
+    </ul>
+
+    <div class="btn-row">
+      <a class="btn btn--light" href={`${home}#reserver`}>{ui('book', lang)}</a>
+      <a class="btn btn--onDark" href={`${home}#maison`}>{ui('discover', lang)}</a>
+    </div>
+  </div>
+
+  <span class="hero__scroll" aria-hidden="true">{ui('scroll', lang)}</span>
+</section>

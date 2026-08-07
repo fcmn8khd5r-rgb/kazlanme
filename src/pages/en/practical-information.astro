@@ -1,0 +1,19 @@
+---
+import gite from '../../data/gite.json';
+import { t } from '../../i18n';
+import Base from '../../layouts/Base.astro';
+import PracticalPage from '../../components/pages/PracticalPage.astro';
+
+const lang = 'en' as const;
+const seo = gite.seo.pages.practical;
+---
+
+<Base
+  lang={lang}
+  routeKey="practical"
+  title={t(seo.title, lang)}
+  description={t(seo.description, lang)}
+  hasHero
+>
+  <PracticalPage lang={lang} />
+</Base>

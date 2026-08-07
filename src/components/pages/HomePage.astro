@@ -1,0 +1,75 @@
+---
+/**
+ * ACCUEIL.
+ *
+ * L'ordre des sections tient la règle de composition : jamais un long texte
+ * sans visuel, jamais une suite d'images sans propos, et jamais deux
+ * dispositions identiques à la suite.
+ *
+ *   héros plein cadre          image
+ *   la maison                  image à droite, puis image à gauche
+ *   les pièces                 rail horizontal
+ *   le bourg                   bandeau pleine largeur, parallaxe
+ *   l'équipement               image à gauche, listes à droite
+ *   le jardin                  image à droite
+ *   les tarifs                 cartes + image
+ *   le calendrier              respiration, sans image
+ *   les environs               mosaïque de quatre
+ *   réserver                   formulaire + contact
+ *
+ * Les fonds alternent aussi — ivoire, brume, brume marine — pour que le
+ * rythme se voie sans qu'on ait à le chercher.
+ */
+import gite from '../../data/gite.json';
+import type { Lang } from '../../i18n';
+import Hero from '../Hero.astro';
+import Story from '../Story.astro';
+import Rooms from '../Rooms.astro';
+import Amenities from '../Amenities.astro';
+import Rates from '../Rates.astro';
+import Availability from '../Availability.astro';
+import AreaTeaser from '../AreaTeaser.astro';
+import BookingForm from '../BookingForm.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+/* Les blocs sont décrits dans gite.json ; on les retrouve par leur identifiant
+   plutôt que par leur position, pour que réordonner les données ne casse rien. */
+const blocks = gite.story as any[];
+const block = (id: string) => blocks.find((b) => b.id === id);
+---
+
+<Hero lang={lang} />
+
+{/* L'ancre #maison est portée par le bloc lui-même, pas par la section : elle
+    atterrit ainsi sur le contenu et non sur le rembourrage vide du haut. */}
+<section class="section">
+  <div class="shell" style="display: grid; gap: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);">
+    <Story block={block('maison')} lang={lang} index={0} />
+    <Story block={block('vivre')} lang={lang} index={1} />
+  </div>
+</section>
+
+<Rooms lang={lang} />
+
+<Story block={block('bourg')} lang={lang} />
+
+<Amenities lang={lang} />
+
+<section class="section section--mist section--tight">
+  <div class="shell">
+    <Story block={block('dehors')} lang={lang} index={0} />
+  </div>
+</section>
+
+<Rates lang={lang} />
+
+<Availability lang={lang} />
+
+<AreaTeaser lang={lang} />
+
+<BookingForm lang={lang} />

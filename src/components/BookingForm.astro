@@ -1,0 +1,169 @@
+---
+/**
+ * Demande de réservation — formulaire Netlify.
+ *
+ * Deux garde-fous demandés et tenus :
+ *   · un champ piège invisible, que seuls les robots remplissent ;
+ *   · une case de consentement explicite, obligatoire.
+ *
+ * Et une règle de fond : à aucun moment le visiteur ne doit croire sa
+ * réservation acquise. Le mot « Réserver » ouvre la demande, le message qui
+ * suit le bouton dit clairement qu'elle reste à confirmer, et la page de
+ * remerciement le redit.
+ */
+import gite from '../data/gite.json';
+import { t, ui, route, type Lang } from '../i18n';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { booking, capacity, contact } = gite;
+const formName = booking.formName;
+const thanks = route('thanks', lang);
+const guestOptions = Array.from({ length: capacity.guests }, (_, i) => i + 1);
+---
+
+<section class="section section--sea" id="reserver">
+  <div class="shell">
+    <SectionHead
+      eyebrow={t(booking.eyebrow, lang)}
+      title={t(booking.title, lang)}
+      intro={t(booking.intro, lang)}
+    />
+
+    <div class="booking">
+      <div class="reveal reveal--side">
+        <form
+          class="form"
+          name={formName}
+          method="POST"
+          action={thanks}
+          data-netlify="true"
+          netlify-honeypot="ne-pas-remplir"
+        >
+          <!-- Netlify identifie l'envoi par ce champ. -->
+          <input type="hidden" name="form-name" value={formName} />
+          <input type="hidden" name="langue" value={lang} />
+
+          <!-- Piège à robots : hors du flux, hors du parcours au clavier. -->
+          <p class="honeypot" aria-hidden="true">
+            <label>
+              Ne remplissez pas ce champ
+              <input type="text" name="ne-pas-remplir" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <div class="field">
+            <label for="nom">{ui('formName', lang)}</label>
+            <input id="nom" name="nom" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="email">{ui('formEmail', lang)}</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="telephone">
+                {ui('formPhone', lang)} <em>— {ui('formPhoneOptional', lang)}</em>
+              </label>
+              <input id="telephone" name="telephone" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="arrivee">{ui('formArrival', lang)}</label>
+              <input id="arrivee" name="arrivee" type="date" required />
+            </div>
+            <div class="field">
+              <label for="depart">{ui('formDeparture', lang)}</label>
+              <input id="depart" name="depart" type="date" required />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="adultes">{ui('formGuests', lang)} — {ui('formAdults', lang)}</label>
+              <select id="adultes" name="adultes" required>
+                {guestOptions.map((n) => <option value={n} selected={n === 2}>{n}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="enfants">{ui('formGuests', lang)} — {ui('formChildren', lang)}</label>
+              <select id="enfants" name="enfants">
+                {[0, 1, 2].map((n) => <option value={n}>{n}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="message">
+              {ui('formMessage', lang)} <em>— {ui('formPhoneOptional', lang)}</em>
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              placeholder={ui('formMessagePlaceholder', lang)}></textarea>
+          </div>
+
+          <div class="consent">
+            <input id="consentement" name="consentement" type="checkbox" required value="oui" />
+            <label for="consentement">
+              {t(booking.consent, lang)}{' '}
+              <a href={route('legal', lang)}>{ui('legalNotice', lang)}</a>.
+            </label>
+          </div>
+
+          <button class="btn btn--solid" type="submit">{ui('formSubmit', lang)}</button>
+        </form>
+
+        <p class="notfirm">{t(booking.notFirm, lang)}</p>
+      </div>
+
+      <aside class="reveal reveal--side" style="--i:1">
+        <div class="card-soft">
+          <h3>{ui('conditions', lang)}</h3>
+          <ul class="aside-list">
+            {
+              t(booking.reassurance, lang).map((line: string) => (
+                <li>
+                  <Icon name="check" />
+                  <span>{line}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card-soft">
+          <h3>{ui('contact', lang)}</h3>
+          <p style="margin-bottom: 0.75rem;">{contact.hostName}</p>
+          <p class="text-mute" style="font-size: 0.9rem; margin-bottom: 0.9rem;">
+            {t(contact.hostRole, lang)}
+          </p>
+          <p class="contact-line">
+            <Icon name="mail" />
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </p>
+          <p class="contact-line">
+            <Icon name="phone" />
+            <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+          </p>
+          <p class="contact-line">
+            <Icon name="clock" />
+            <span>{t(contact.responseTime, lang)}</span>
+          </p>
+          <p class="note">
+            {ui('weSpeak', lang)} : {t(contact.languages, lang).join(', ')}.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import gite from '../data/gite.json';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+import LegalPage from '../components/pages/LegalPage.astro';
+
+const lang = 'fr' as const;
+const seo = gite.seo.pages.terms;
+---
+
+<Base
+  lang={lang}
+  routeKey="terms"
+  title={t(seo.title, lang)}
+  description={t(seo.description, lang)}
+  themeColor="#eff3f3"
+>
+  <LegalPage lang={lang} doc="cgv" />
+</Base>

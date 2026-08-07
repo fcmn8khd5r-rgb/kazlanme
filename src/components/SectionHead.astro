@@ -1,0 +1,20 @@
+---
+/** Chapeau de section : surtitre, titre, et un paragraphe d'accroche. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  level?: 'h1' | 'h2';
+  id?: string;
+  class?: string;
+}
+
+const { eyebrow, title, intro, level = 'h2', id, class: klass } = Astro.props;
+const Heading = level;
+---
+
+<div class:list={['section__head', 'reveal', 'reveal--side', klass]}>
+  {eyebrow && <span class="eyebrow eyebrow--rule">{eyebrow}</span>}
+  <Heading id={id}>{title}</Heading>
+  {intro && <p>{intro}</p>}
+</div>

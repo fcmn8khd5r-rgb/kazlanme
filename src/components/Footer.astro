@@ -1,0 +1,77 @@
+---
+import gite from '../data/gite.json';
+import { t, ui, route, type Lang } from '../i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const home = route('home', lang);
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__top">
+      <div>
+        <p class="footer__brand">{gite.identity.name}</p>
+        <p>{t(gite.identity.tagline, lang)}</p>
+
+        <div class="footer__demo">
+          <Icon name="info" />
+          <p>
+            <b>{t(gite.site.demoLabel, lang)}.</b>{' '}{t(gite.site.demoNotice, lang)}{' '}{
+              t(gite.site.demoDetails, lang)
+            }
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h3>{ui('aroundTitle', lang)}</h3>
+        <ul>
+          <li><a href={`${home}#maison`}>{ui('navHouse', lang)}</a></li>
+          <li><a href={`${home}#pieces`}>{ui('navRooms', lang)}</a></li>
+          <li><a href={`${home}#equipement`}>{ui('navAmenities', lang)}</a></li>
+          <li><a href={`${home}#tarifs`}>{ui('navRates', lang)}</a></li>
+          <li><a href={`${home}#calendrier`}>{ui('navCalendar', lang)}</a></li>
+          <li><a href={route('surroundings', lang)}>{ui('navSurroundings', lang)}</a></li>
+          <li><a href={route('practical', lang)}>{ui('navPractical', lang)}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>{ui('contact', lang)}</h3>
+        <ul>
+          <li>{gite.contact.hostName}</li>
+          <li class="text-mute">{t(gite.contact.hostRole, lang)}</li>
+          <li><a href={`mailto:${gite.contact.email}`}>{gite.contact.email}</a></li>
+          <li><a href={`tel:${gite.contact.phone}`}>{gite.contact.phoneDisplay}</a></li>
+          <li>
+            <a href={gite.location.mapLink} rel="noopener noreferrer" target="_blank">
+              {gite.location.commune}, {gite.location.region}
+            </a>
+          </li>
+          <li class="text-mute">{t(gite.identity.classification, lang)}</li>
+          <li class="text-mute">
+            {t(gite.identity.registrationLabel, lang)} : {gite.identity.registrationNumber}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} {gite.identity.name}. {ui('allRights', lang)}.</p>
+      <nav class="footer__legal" aria-label={ui('legalNotice', lang)}>
+        <a href={route('legal', lang)}>{ui('legalNotice', lang)}</a>
+        <a href={route('terms', lang)}>{ui('terms', lang)}</a>
+        <a href={route('home', other)} hreflang={other} lang={other}>
+          {other === 'en' ? 'English' : 'Français'}
+        </a>
+      </nav>
+    </div>
+  </div>
+</footer>

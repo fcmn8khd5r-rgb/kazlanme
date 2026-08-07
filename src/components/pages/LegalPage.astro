@@ -1,0 +1,57 @@
+---
+/**
+ * Pages juridiques — mentions légales et conditions générales.
+ *
+ * Les textes viennent de gite.json et contiennent des jetons {{chemin}} que
+ * fill() remplace au build : un tarif ou une adresse n'est donc écrit qu'une
+ * fois, et les CGV ne peuvent pas contredire la page des tarifs.
+ */
+import gite from '../../data/gite.json';
+import { t, ui, fill, formatDate, type Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+  doc: 'mentions' | 'cgv';
+}
+
+const { lang, doc } = Astro.props;
+const document = gite.legal.documents[doc];
+
+const sections = document.sections.map((section, index) => ({
+  id: `s${index + 1}`,
+  title: t(section.title, lang),
+  paragraphs: t(section.body, lang).map((paragraph: string) => fill(paragraph, lang)),
+}));
+---
+
+<section class="pagehead pagehead--plain">
+  <div class="shell">
+    <span class="eyebrow">{gite.identity.name}</span>
+    <h1>{t(document.title, lang)}</h1>
+    <p>{ui('legalUpdated', lang)} : {formatDate(document.updatedAt, lang)}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="legal-doc">
+      <nav class="legal-toc reveal reveal--side" aria-label={t(document.title, lang)}>
+        <p>{t(document.title, lang)}</p>
+        <ol>
+          {sections.map((section) => (
+            <li><a href={`#${section.id}`}>{section.title}</a></li>
+          ))}
+        </ol>
+      </nav>
+
+      {
+        sections.map((section, index) => (
+          <section id={section.id} class="reveal reveal--side" style={`--i:${index % 3}`}>
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>

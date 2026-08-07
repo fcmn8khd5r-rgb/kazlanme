@@ -1,0 +1,752 @@
+{
+  "$comment": "SOURCE UNIQUE DE VÉRITÉ — tout le contenu propre au gîte vit ici. Aucun texte de ce fichier n'est répété dans les composants. Voir README.md pour décliner le modèle sur un autre hébergement.",
+  "site": {
+    "url": "https://kaz-lanme.netlify.app",
+    "defaultLang": "fr",
+    "languages": ["fr", "en"],
+    "demo": true,
+    "demoLabel": { "fr": "Site de démonstration", "en": "Demonstration site" },
+    "demoNotice": { "fr": "Sites de réservation directe pour hébergements touristiques aux Antilles.", "en": "Direct-booking websites for tourist accommodation in the French West Indies." },
+    "demoDetails": { "fr": "Le gîte, les personnes, les tarifs et les coordonnées présentés ici sont fictifs. Les photographies proviennent d’une banque d’images libre de droits et ne représentent pas un bien réel.", "en": "The cottage, people, rates and contact details shown here are fictional. The photographs come from a royalty-free stock library and do not depict a real property." }
+  },
+  "identity": {
+    "name": "Kaz Lanmè",
+    "shortName": "Kaz Lanmè",
+    "tagline": { "fr": "Un gîte de charme aux Anses-d’Arlet, à cinq minutes du bourg et de la mer", "en": "A charming cottage in Les Anses-d’Arlet, five minutes from the village and the sea" },
+    "kicker": { "fr": "Gîte 3 étoiles · Les Anses-d’Arlet, Martinique", "en": "3-star cottage · Les Anses-d’Arlet, Martinique" },
+    "classification": { "fr": "Meublé de tourisme classé 3 étoiles", "en": "Tourism-classified 3-star furnished rental" },
+    "registrationNumber": "97217 0000 0000",
+    "registrationLabel": { "fr": "Numéro d’enregistrement en mairie", "en": "Town hall registration number" }
+  },
+  "capacity": {
+    "guests": 4,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "surfaceM2": 62,
+    "summary": { "fr": "4 voyageurs · 2 chambres · 1 salle d’eau · 62 m² et une terrasse", "en": "4 guests · 2 bedrooms · 1 shower room · 62 m² and a terrace" },
+    "minNights": 3,
+    "checkInFrom": "16:00",
+    "checkOutBefore": "10:00"
+  },
+  "location": {
+    "commune": "Les Anses-d’Arlet",
+    "street": "Chemin de Petite Anse",
+    "postalCode": "97217",
+    "city": "Les Anses-d’Arlet",
+    "region": "Martinique",
+    "countryCode": "MQ",
+    "country": { "fr": "France (Martinique)", "en": "France (Martinique)" },
+    "latitude": 14.4881,
+    "longitude": -61.0847,
+    "mapLink": "https://www.openstreetmap.org/?mlat=14.4881&mlon=-61.0847#map=14/14.4881/-61.0847",
+    "mapLinkLabel": { "fr": "Situer le bourg sur la carte", "en": "Find the village on a map" },
+    "coordinatesNote": { "fr": "Coordonnées approximatives. L’adresse exacte vous est envoyée avec le plan d’accès, à la confirmation.", "en": "Approximate coordinates. The exact address is sent with directions once your stay is confirmed." }
+  },
+  "hero": {
+    "image": "01-veranda.jpg",
+    "alt": { "fr": "La véranda du gîte, plafond de bois peint en blanc, plantes vertes et fauteuils autour d’une table ronde", "en": "The cottage veranda, white-painted timber ceiling, green plants and chairs around a round table" }
+  },
+  "$storyNote": "L'accueil se lit comme une suite de blocs. Chacun déclare sa disposition — texte à gauche, texte à droite, bandeau pleine largeur, mosaïque de trois, ou bloc de texte seul. La règle : jamais deux blocs de même disposition à la suite, jamais un texte sans image ni une image sans texte.",
+  "story": [
+    {
+      "id": "maison",
+      "layout": "image-right",
+      "image": "02-sejour.jpg",
+      "alt": { "fr": "Le séjour ouvert sur la cuisine, grande table en bois et chaises en rotin", "en": "The living room open to the kitchen, large wooden table and rattan chairs" },
+      "eyebrow": { "fr": "La maison", "en": "The house" },
+      "title": { "fr": "Une petite maison créole, tenue avec soin", "en": "A small Creole house, carefully kept" },
+      "text": {
+        "fr": [
+          "Kaz Lanmè occupe le rez-de-jardin d’une maison de famille, sur la route de Petite Anse. Le bourg est à cinq minutes en voiture, la plage à sept.",
+          "Soixante-deux mètres carrés, deux chambres, une grande pièce de vie qui ouvre sur la terrasse. C’est simple, clair, et pensé pour qu’on s’y installe vraiment."
+        ],
+        "en": [
+          "Kaz Lanmè occupies the garden level of a family house, on the road to Petite Anse. The village is a five-minute drive away, the beach seven.",
+          "Sixty-two square metres, two bedrooms, and a large living space opening onto the terrace. Simple, bright, and made to be properly lived in."
+        ]
+      }
+    },
+    {
+      "id": "vivre",
+      "layout": "image-left",
+      "image": "03-cuisine.jpg",
+      "alt": { "fr": "La cuisine, plan de travail en bois clair et tabourets en fibre tressée", "en": "The kitchen, pale wood worktop and woven fibre stools" },
+      "eyebrow": { "fr": "Au quotidien", "en": "Day to day" },
+      "title": { "fr": "On y cuisine, on y traîne", "en": "You cook here, you linger here" },
+      "text": {
+        "fr": [
+          "La cuisine est ouverte sur la pièce de vie. Tout y est : plaques, four, lave-vaisselle, grand réfrigérateur.",
+          "Le marché du bourg a lieu le vendredi matin. Le poisson se vend sur la plage, à l’arrivée des barques, vers sept heures."
+        ],
+        "en": [
+          "The kitchen opens onto the living area. Everything is there: hob, oven, dishwasher, large fridge.",
+          "The village market is on Friday mornings. Fish is sold on the beach as the boats come in, around seven."
+        ]
+      }
+    },
+    {
+      "id": "bourg",
+      "layout": "band",
+      "image": "bourg.jpg",
+      "alt": { "fr": "Le front de mer du bourg, maisons colorées, cocotiers et barque de pêche amarrée", "en": "The village seafront, colourful houses, coconut palms and a moored fishing boat" },
+      "line": { "fr": "Le bourg, sept minutes à pied du sable.", "en": "The village, a seven-minute walk from the sand." },
+      "credit": { "fr": "Les Anses-d’Arlet, front de mer", "en": "Les Anses-d’Arlet, the seafront" }
+    },
+    {
+      "id": "dehors",
+      "layout": "image-right",
+      "image": "05-chambre-jardin.jpg",
+      "alt": { "fr": "La chambre sur le jardin, tête de lit en cannage, ventilateur de plafond et porte vitrée", "en": "The garden bedroom, cane headboard, ceiling fan and glazed door" },
+      "eyebrow": { "fr": "Le jardin", "en": "The garden" },
+      "title": { "fr": "Une terrasse et trois arbres", "en": "A terrace and three trees" },
+      "text": {
+        "fr": [
+          "Le jardin est petit et sans prétention : un manguier, deux cocotiers, un carré d’herbe. De quoi prendre le café dehors et faire sécher les serviettes.",
+          "La terrasse est couverte. Table pour quatre, deux transats, et l’ombre qui tourne au bon moment."
+        ],
+        "en": [
+          "The garden is small and unpretentious: a mango tree, two coconut palms, a patch of grass. Enough for coffee outside and drying the towels.",
+          "The terrace is covered. A table for four, two loungers, and shade that comes round at the right time."
+        ]
+      }
+    }
+  ],
+  "rooms": {
+    "eyebrow": { "fr": "Les pièces", "en": "The rooms" },
+    "title": { "fr": "Faites le tour", "en": "Take a look round" },
+    "intro": { "fr": "Six vues, dans l’ordre où l’on traverse la maison. Faites défiler sur le côté.", "en": "Six views, in the order you walk through the house. Scroll sideways." },
+    "items": [
+      {
+        "image": "02-sejour.jpg",
+        "name": { "fr": "Le séjour", "en": "The living room" },
+        "note": { "fr": "Table pour six, canapé, ventilateur", "en": "Table for six, sofa, ceiling fan" },
+        "alt": { "fr": "Le séjour et sa grande table en bois", "en": "The living room and its large wooden table" }
+      },
+      {
+        "image": "03-cuisine.jpg",
+        "name": { "fr": "La cuisine", "en": "The kitchen" },
+        "note": { "fr": "Ouverte, équipée, plan de travail en bois", "en": "Open, fully equipped, wooden worktop" },
+        "alt": { "fr": "La cuisine ouverte sur la pièce de vie", "en": "The kitchen open to the living area" }
+      },
+      {
+        "image": "04-chambre-bleue.jpg",
+        "name": { "fr": "La chambre bleue", "en": "The blue bedroom" },
+        "note": { "fr": "Lit 160, tête de lit peinte, placard", "en": "160 cm bed, painted headboard, wardrobe" },
+        "alt": { "fr": "La chambre bleue, tête de lit turquoise et linge blanc", "en": "The blue bedroom, turquoise headboard and white linen" }
+      },
+      {
+        "image": "05-chambre-jardin.jpg",
+        "name": { "fr": "La chambre sur le jardin", "en": "The garden bedroom" },
+        "note": { "fr": "Lit 140, accès direct à la terrasse", "en": "140 cm bed, direct access to the terrace" },
+        "alt": { "fr": "La chambre sur le jardin et sa porte vitrée", "en": "The garden bedroom and its glazed door" }
+      },
+      {
+        "image": "07-salle-eau.jpg",
+        "name": { "fr": "La salle d’eau", "en": "The shower room" },
+        "note": { "fr": "Douche à l’italienne, eau chaude solaire", "en": "Walk-in shower, solar-heated water" },
+        "alt": { "fr": "La salle d’eau, douche et cloison de bois", "en": "The shower room, shower and timber screen" }
+      },
+      {
+        "image": "06-chambre-rotin.jpg",
+        "name": { "fr": "Les détails", "en": "The details" },
+        "note": { "fr": "Rotin, coton, plantes vertes", "en": "Rattan, cotton, green plants" },
+        "alt": { "fr": "Détail d’un lit en rotin et de plantes vertes", "en": "Detail of a rattan bed and green plants" }
+      }
+    ]
+  },
+  "amenities": {
+    "eyebrow": { "fr": "L’équipement", "en": "Amenities" },
+    "title": { "fr": "Ce qui est là", "en": "What’s there" },
+    "image": "06-chambre-rotin.jpg",
+    "alt": { "fr": "Coin de chambre, lit en rotin et plantes vertes", "en": "Corner of a bedroom, rattan bed and green plants" },
+    "intro": { "fr": "Rien de superflu, mais rien qui manque. Vous arrivez avec vos valises, c’est tout.", "en": "Nothing superfluous, nothing missing. You arrive with your suitcases, that’s all." },
+    "groups": [
+      {
+        "title": { "fr": "Cuisine", "en": "Kitchen" },
+        "items": {
+          "fr": [
+            "Plaques, four, micro-ondes",
+            "Lave-vaisselle",
+            "Grand réfrigérateur-congélateur",
+            "Cafetière, bouilloire, grille-pain",
+            "Vaisselle et ustensiles complets"
+          ],
+          "en": [
+            "Hob, oven, microwave",
+            "Dishwasher",
+            "Large fridge-freezer",
+            "Coffee maker, kettle, toaster",
+            "Full crockery and utensils"
+          ]
+        }
+      },
+      {
+        "title": { "fr": "Confort", "en": "Comfort" },
+        "items": {
+          "fr": [
+            "Climatisation dans les deux chambres",
+            "Ventilateurs de plafond",
+            "Moustiquaires à toutes les ouvertures",
+            "Draps et linge de toilette fournis",
+            "Lave-linge"
+          ],
+          "en": [
+            "Air conditioning in both bedrooms",
+            "Ceiling fans",
+            "Mosquito screens on every opening",
+            "Bed linen and towels provided",
+            "Washing machine"
+          ]
+        }
+      },
+      {
+        "title": { "fr": "Dehors", "en": "Outdoors" },
+        "items": {
+          "fr": [
+            "Terrasse couverte, table pour quatre",
+            "Deux transats",
+            "Douche extérieure",
+            "Petit jardin clos",
+            "Une place de parking"
+          ],
+          "en": [
+            "Covered terrace, table for four",
+            "Two sun loungers",
+            "Outdoor shower",
+            "Small enclosed garden",
+            "One parking space"
+          ]
+        }
+      },
+      {
+        "title": { "fr": "Services", "en": "Services" },
+        "items": {
+          "fr": [
+            "Wi-Fi fibre",
+            "Ménage de fin de séjour inclus",
+            "Kit plage : glacière, serviettes, parasol",
+            "Masques et tubas prêtés",
+            "Lit parapluie sur demande"
+          ],
+          "en": [
+            "Fibre Wi-Fi",
+            "End-of-stay cleaning included",
+            "Beach kit: cool box, towels, parasol",
+            "Masks and snorkels lent",
+            "Travel cot on request"
+          ]
+        }
+      }
+    ],
+    "restrictions": {
+      "fr": [
+        "Maison non-fumeur — terrasse et jardin autorisés",
+        "Animaux non admis",
+        "Fêtes et événements non autorisés",
+        "Voiture vivement conseillée"
+      ],
+      "en": [
+        "Non-smoking house — terrace and garden are fine",
+        "Pets not admitted",
+        "Parties and events not allowed",
+        "A car is strongly recommended"
+      ]
+    }
+  },
+  "rates": {
+    "eyebrow": { "fr": "Les tarifs", "en": "Rates" },
+    "title": { "fr": "Clair et sans surprise", "en": "Clear, no surprises" },
+    "currency": "EUR",
+    "image": "04-chambre-bleue.jpg",
+    "alt": { "fr": "La chambre bleue et sa tête de lit turquoise", "en": "The blue bedroom and its turquoise headboard" },
+    "seasons": [
+      {
+        "id": "haute",
+        "label": { "fr": "Haute saison", "en": "High season" },
+        "period": { "fr": "Décembre → avril", "en": "December → April" },
+        "months": [12, 1, 2, 3, 4],
+        "weeklyPrice": 700,
+        "nightlyPrice": 120
+      },
+      {
+        "id": "basse",
+        "label": { "fr": "Basse saison", "en": "Low season" },
+        "period": { "fr": "Mai → novembre", "en": "May → November" },
+        "months": [5, 6, 7, 8, 9, 10, 11],
+        "weeklyPrice": 490,
+        "nightlyPrice": 85
+      }
+    ],
+    "included": {
+      "fr": [
+        "Draps, linge de toilette et de maison",
+        "Ménage de fin de séjour",
+        "Eau, électricité, climatisation",
+        "Wi-Fi fibre",
+        "Kit plage et matériel de snorkeling"
+      ],
+      "en": [
+        "Bed, bath and household linen",
+        "End-of-stay cleaning",
+        "Water, electricity, air conditioning",
+        "Fibre Wi-Fi",
+        "Beach kit and snorkelling gear"
+      ]
+    },
+    "touristTax": {
+      "label": { "fr": "Taxe de séjour", "en": "Tourist tax" },
+      "amount": { "fr": "0,75 € par personne et par nuit", "en": "€0.75 per person per night" },
+      "note": { "fr": "Fixée par la commune, collectée sur place.", "en": "Set by the town hall, collected on site." }
+    },
+    "conditions": {
+      "depositPercent": { "fr": "25 %", "en": "25%" },
+      "balanceDueDays": 30,
+      "securityDeposit": { "fr": "400 €", "en": "€400" },
+      "cancellationFreeDays": 45,
+      "payment": { "fr": "Virement bancaire ou carte", "en": "Bank transfer or card" }
+    },
+    "note": { "fr": "Tarifs pour le gîte entier, jusqu’à 4 personnes, ménage compris. Séjour minimum de 3 nuits. Devis ferme sous 24 heures.", "en": "Rates are for the whole cottage, up to 4 guests, cleaning included. Minimum stay 3 nights. A firm quote follows within 24 hours." }
+  },
+  "availability": {
+    "eyebrow": { "fr": "Le calendrier", "en": "The calendar" },
+    "title": { "fr": "Nos disponibilités", "en": "Our availability" },
+    "$note": "Coller ici les URL d'export iCal d'Airbnb, de Booking ou d'un agenda Google. Elles sont lues par la fonction Netlify netlify/functions/disponibilites.mjs, jamais par le navigateur — les plateformes n'autorisent pas la lecture directe (CORS). Tableau vide : seules les périodes manuelles s'appliquent.",
+    "icalUrls": [],
+    "monthsAhead": 12,
+    "manualBlocks": [
+      {
+        "start": "2026-12-20",
+        "end": "2027-01-04"
+      },
+      {
+        "start": "2027-02-14",
+        "end": "2027-02-22"
+      },
+      {
+        "start": "2026-09-05",
+        "end": "2026-09-13"
+      }
+    ],
+    "intro": { "fr": "Le calendrier se met à jour avec nos autres plateformes. Les dates grisées sont prises ; les autres sont libres.", "en": "The calendar syncs with our other platforms. Greyed-out dates are taken; the rest are free." },
+    "unavailable": { "fr": "Le calendrier partagé est momentanément injoignable. Écrivez-nous : nous confirmons vos dates sous 24 heures.", "en": "The shared calendar is temporarily unreachable. Write to us — we confirm your dates within 24 hours." }
+  },
+  "booking": {
+    "formName": "reservation-kaz-lanme",
+    "eyebrow": { "fr": "Réserver", "en": "Book" },
+    "title": { "fr": "Dites-nous vos dates", "en": "Tell us your dates" },
+    "intro": { "fr": "Nous vérifions le calendrier et vous répondons sous 24 heures avec un devis ferme. Sans engagement.", "en": "We check the calendar and reply within 24 hours with a firm quote. No obligation." },
+    "notFirm": { "fr": "En envoyant ce formulaire, vous faites une demande : la réservation n’est pas encore ferme. Elle le devient à réception de notre confirmation, sous 24 heures.", "en": "Sending this form is a request: the booking is not yet firm. It becomes firm when you receive our confirmation, within 24 hours." },
+    "reassurance": {
+      "fr": [
+        "Réponse sous 24 h, sept jours sur sept",
+        "Aucun paiement à ce stade",
+        "Contrat envoyé par e-mail"
+      ],
+      "en": [
+        "An answer within 24 hours, seven days a week",
+        "No payment at this stage",
+        "Agreement sent by e-mail"
+      ]
+    },
+    "consent": { "fr": "J’accepte que ces informations soient utilisées pour traiter ma demande. Elles ne sont transmises à personne d’autre.", "en": "I agree that this information may be used to process my request. It is not shared with anyone else." },
+    "thanks": {
+      "title": { "fr": "Votre demande est bien reçue", "en": "We have your request" },
+      "body": { "fr": "Merci. Nous vérifions le calendrier et vous envoyons une confirmation sous 24 heures, avec le détail du prix. Votre réservation n’est pas encore ferme : elle le deviendra à ce moment-là.", "en": "Thank you. We are checking the calendar and will send you a confirmation within 24 hours, with the full price. Your booking is not firm yet: it becomes firm at that point." }
+    }
+  },
+  "surroundings": {
+    "eyebrow": { "fr": "Autour", "en": "Around" },
+    "title": { "fr": "Les environs", "en": "The area" },
+    "intro": { "fr": "Tout tient dans un rayon de dix minutes. Le bourg, deux plages, et un lagon où l’on croise des tortues presque à coup sûr.", "en": "Everything is within ten minutes. The village, two beaches, and a lagoon where you will almost certainly meet a turtle." },
+    "places": [
+      {
+        "name": { "fr": "Le bourg et son église", "en": "The village and its church" },
+        "image": "bourg.jpg",
+        "alt": { "fr": "Le front de mer du bourg et ses maisons colorées", "en": "The village seafront and its colourful houses" },
+        "time": { "fr": "5 min en voiture", "en": "5 min by car" },
+        "text": { "fr": "L’église Saint-Henri se dresse face au ponton, au bout de la rue principale. C’est l’image qu’on garde des Anses-d’Arlet. Allez-y en fin d’après-midi, quand les pêcheurs rentrent et que la lumière descend sur la baie.", "en": "Saint-Henri church stands facing the jetty, at the end of the main street. It is the image people keep of Les Anses-d’Arlet. Go late in the afternoon, when the fishermen come in and the light drops over the bay." }
+      },
+      {
+        "name": { "fr": "Grande Anse", "en": "Grande Anse" },
+        "image": "grande-anse.jpg",
+        "alt": { "fr": "La baie vue du ciel, sable clair et eau turquoise", "en": "The bay seen from above, pale sand and turquoise water" },
+        "time": { "fr": "7 min en voiture", "en": "7 min by car" },
+        "text": { "fr": "Une longue plage de sable clair, bordée de raisiniers. L’eau est calme, peu profonde sur des dizaines de mètres — c’est la plage des familles. Quelques paillotes servent à déjeuner les pieds dans le sable.", "en": "A long pale-sand beach edged with sea grapes. The water is calm and shallow for tens of metres — this is the family beach. A few beach shacks serve lunch with your feet in the sand." }
+      },
+      {
+        "name": { "fr": "Petite Anse", "en": "Petite Anse" },
+        "image": "petite-anse.jpg",
+        "alt": { "fr": "Un village au bord de l’eau, barques et maisons basses", "en": "A village at the water's edge, boats and low houses" },
+        "time": { "fr": "3 min en voiture", "en": "3 min by car" },
+        "text": { "fr": "Plus petite, plus tranquille, avec ses barques tirées sur le sable. On y vient le matin, avant que le soleil ne tape. Un boulanger ouvre à six heures sur la place.", "en": "Smaller, quieter, with fishing boats pulled up on the sand. Come in the morning, before the sun bites. A baker opens at six on the square." }
+      },
+      {
+        "name": { "fr": "Les tortues", "en": "The turtles" },
+        "image": "tortue.jpg",
+        "alt": { "fr": "Une tortue verte nageant dans une eau claire", "en": "A green turtle swimming in clear water" },
+        "time": { "fr": "Depuis la plage", "en": "From the beach" },
+        "text": { "fr": "Elles broutent les herbiers, à trente mètres du bord, entre le ponton et la pointe. Masque et tuba suffisent — nous en prêtons. Gardez vos distances et ne les touchez pas : elles sont protégées.", "en": "They graze the seagrass beds thirty metres from shore, between the jetty and the point. A mask and snorkel are enough — we lend them. Keep your distance and do not touch them: they are protected." }
+      }
+    ]
+  },
+  "practical": {
+    "eyebrow": { "fr": "Avant de venir", "en": "Before you come" },
+    "title": { "fr": "Infos pratiques", "en": "Practical information" },
+    "intro": { "fr": "Ce qu’il faut savoir avant de partir, et une fois sur place. Tout vous est renvoyé par écrit avec le contrat.", "en": "What to know before you leave, and once you arrive. All of it is sent to you in writing with the agreement." },
+    "sections": [
+      {
+        "title": { "fr": "Arrivée et départ", "en": "Arrival and departure" },
+        "items": [
+          {
+            "label": { "fr": "Arrivée", "en": "Check-in" },
+            "value": { "fr": "À partir de 16 h, accueil sur place et remise des clés", "en": "From 4 pm, welcome on site and key handover" }
+          },
+          {
+            "label": { "fr": "Départ", "en": "Check-out" },
+            "value": { "fr": "Avant 10 h", "en": "Before 10 am" }
+          },
+          {
+            "label": { "fr": "Arrivée tardive", "en": "Late arrival" },
+            "value": { "fr": "Possible jusqu’à 21 h, à signaler la veille", "en": "Possible until 9 pm, let us know the day before" }
+          },
+          {
+            "label": { "fr": "Séjour minimum", "en": "Minimum stay" },
+            "value": { "fr": "3 nuits", "en": "3 nights" }
+          }
+        ]
+      },
+      {
+        "title": { "fr": "Venir", "en": "Getting here" },
+        "items": [
+          {
+            "label": { "fr": "Aéroport", "en": "Airport" },
+            "value": { "fr": "Aimé Césaire (FDF) à 45 min — 35 km", "en": "Aimé Césaire (FDF), 45 min away — 35 km" }
+          },
+          {
+            "label": { "fr": "Voiture", "en": "Car" },
+            "value": { "fr": "Vivement conseillée. À réserver avant le départ en haute saison", "en": "Strongly recommended. Book before you travel in high season" }
+          },
+          {
+            "label": { "fr": "Navette maritime", "en": "Ferry" },
+            "value": { "fr": "Depuis Fort-de-France jusqu’à Anse-Mitan, puis 25 min de route", "en": "From Fort-de-France to Anse-Mitan, then a 25-minute drive" }
+          },
+          {
+            "label": { "fr": "Commerces", "en": "Shops" },
+            "value": { "fr": "Supérette au bourg à 5 min, marché le vendredi matin", "en": "Mini-market in the village 5 min away, market on Friday mornings" }
+          }
+        ]
+      },
+      {
+        "title": { "fr": "Sur place", "en": "At the cottage" },
+        "items": [
+          {
+            "label": { "fr": "Wi-Fi", "en": "Wi-Fi" },
+            "value": { "fr": "Fibre, code affiché dans l’entrée", "en": "Fibre, code displayed in the hallway" }
+          },
+          {
+            "label": { "fr": "Linge", "en": "Linen" },
+            "value": { "fr": "Draps et serviettes fournis, lits faits à l’arrivée", "en": "Bed linen and towels provided, beds made on arrival" }
+          },
+          {
+            "label": { "fr": "Ménage", "en": "Cleaning" },
+            "value": { "fr": "Ménage de fin de séjour compris dans le tarif", "en": "End-of-stay cleaning included in the rate" }
+          },
+          {
+            "label": { "fr": "Tri", "en": "Recycling" },
+            "value": { "fr": "Deux bacs sous l’auvent, collecte le mardi", "en": "Two bins under the canopy, collection on Tuesdays" }
+          }
+        ]
+      },
+      {
+        "title": { "fr": "Climat et santé", "en": "Climate and health" },
+        "items": [
+          {
+            "label": { "fr": "Carême", "en": "Dry season" },
+            "value": { "fr": "Décembre à avril : sec et venté, 28 °C. La meilleure période", "en": "December to April: dry and breezy, 28 °C. The best window" }
+          },
+          {
+            "label": { "fr": "Hivernage", "en": "Wet season" },
+            "value": { "fr": "Juillet à octobre : plus chaud, averses courtes, mer à 29 °C", "en": "July to October: hotter, short showers, sea at 29 °C" }
+          },
+          {
+            "label": { "fr": "Moustiques", "en": "Mosquitoes" },
+            "value": { "fr": "Moustiquaires partout, répulsif fourni", "en": "Mosquito screens throughout, repellent provided" }
+          },
+          {
+            "label": { "fr": "Urgences", "en": "Emergencies" },
+            "value": { "fr": "15 (SAMU), 18 (pompiers), 112. Pharmacie au bourg", "en": "15 (medical), 18 (fire), 112. Pharmacy in the village" }
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "hostName": "Sylvie & Marcel Céleste",
+    "hostRole": { "fr": "Propriétaires, sur place aux Anses-d’Arlet", "en": "Owners, based in Les Anses-d’Arlet" },
+    "email": "bonjour@kaz-lanme.example.com",
+    "phone": "+596696000000",
+    "phoneDisplay": "+596 696 00 00 00",
+    "languages": {
+      "fr": ["Français", "Créole martiniquais", "Anglais"],
+      "en": ["French", "Martinican Creole", "English"]
+    },
+    "responseTime": { "fr": "Nous répondons sous 24 heures.", "en": "We reply within 24 hours." }
+  },
+  "legal": {
+    "$roles": "Deux rôles distincts, à ne pas confondre. « publisher » est l'éditeur RÉEL du site — la personne qui le met en ligne, seule identité qui doive être vraie. « operator » est l'exploitant du gîte, fictif tant que le modèle sert de démonstration ; il devient le vrai loueur à la livraison d'un client.",
+    "publisher": {
+      "name": "M. Bocage",
+      "role": { "fr": "Éditeur du site", "en": "Site publisher" },
+      "$email": "Facultatif. Sous la LCEN, un éditeur non professionnel peut ne pas publier ses coordonnées dès lors que l'hébergeur les détient. Renseigner cette clé pour faire apparaître une adresse de contact dans les mentions légales.",
+      "email": ""
+    },
+    "operator": {
+      "name": "Sylvie Céleste",
+      "legalForm": { "fr": "Entrepreneur individuel (loueur en meublé non professionnel)", "en": "Sole trader (non-professional furnished rental operator)" },
+      "address": "Chemin de Petite Anse, 97217 Les Anses-d’Arlet, Martinique",
+      "siret": "000 000 000 00000",
+      "vat": { "fr": "TVA non applicable, article 293 B du CGI", "en": "VAT not applicable, article 293 B of the French tax code" },
+      "email": "bonjour@kaz-lanme.example.com",
+      "phone": "+596 696 00 00 00"
+    },
+    "hosting": {
+      "name": "Netlify, Inc.",
+      "address": "512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis",
+      "url": "https://www.netlify.com"
+    },
+    "documents": {
+      "mentions": {
+        "title": { "fr": "Mentions légales", "en": "Legal notice" },
+        "updatedAt": "2026-08-01",
+        "sections": [
+          {
+            "title": { "fr": "Nature du site", "en": "Nature of this site" },
+            "body": {
+              "fr": [
+                "Ce site est un MODÈLE DE DÉMONSTRATION. {{identity.name}} est un gîte fictif : ni le bien, ni les personnes, ni les numéros mentionnés n’existent. Aucune réservation réelle ne peut y être effectuée.",
+                "Les mentions ci-dessous illustrent ce qu’un site de location saisonnière doit publier. Seule l’identité de l’éditeur est réelle : tout le reste est à remplacer avant une mise en ligne pour un vrai client."
+              ],
+              "en": [
+                "This site is a DEMONSTRATION TEMPLATE. {{identity.name}} is a fictional cottage: neither the property, nor the people, nor the numbers mentioned exist. No real booking can be made.",
+                "The notices below illustrate what a holiday rental website must publish. Only the publisher’s identity is real: everything else is to be replaced before publishing for an actual client."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Éditeur", "en": "Publisher" },
+            "body": {
+              "fr": [
+                "Ce site est édité par {{legal.publisher.name}}, qui le publie à titre de démonstration. Il ne correspond à aucune activité de location, et aucune réservation ne peut y être conclue.",
+                "Les mentions qui suivent sont un EXEMPLE de ce qu’un loueur doit publier. Elles sont fictives et seront remplacées par celles du propriétaire lors d’une mise en ligne réelle :",
+                "{{legal.operator.name}}, {{legal.operator.legalForm}}, {{legal.operator.address}} — SIRET {{legal.operator.siret}}, {{legal.operator.vat}}, numéro d’enregistrement en mairie {{identity.registrationNumber}}, contact {{legal.operator.email}}."
+              ],
+              "en": [
+                "This site is published by {{legal.publisher.name}} as a demonstration. It corresponds to no rental business, and no booking can be concluded through it.",
+                "The details below are an EXAMPLE of what a holiday-let owner must publish. They are fictional and will be replaced by the owner’s own before any real publication:",
+                "{{legal.operator.name}}, {{legal.operator.legalForm}}, {{legal.operator.address}} — company registration (SIRET) {{legal.operator.siret}}, {{legal.operator.vat}}, town hall registration number {{identity.registrationNumber}}, contact {{legal.operator.email}}."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Hébergement", "en": "Hosting" },
+            "body": {
+              "fr": [
+                "Le site est hébergé par {{legal.hosting.name}}, {{legal.hosting.address}} — {{legal.hosting.url}}."
+              ],
+              "en": [
+                "The site is hosted by {{legal.hosting.name}}, {{legal.hosting.address}} — {{legal.hosting.url}}."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Propriété intellectuelle", "en": "Intellectual property" },
+            "body": {
+              "fr": [
+                "Les photographies proviennent d’une banque d’images sous licence autorisant l’usage commercial ; les sources sont listées dans le fichier CREDITS.md du projet. Elles ne représentent pas un bien réel.",
+                "Les textes et éléments graphiques sont protégés par le droit d’auteur."
+              ],
+              "en": [
+                "The photographs come from a stock library under a licence permitting commercial use; sources are listed in the project's CREDITS.md file. They do not depict a real property.",
+                "Texts and graphic elements are protected by copyright."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Données personnelles", "en": "Personal data" },
+            "body": {
+              "fr": [
+                "S’agissant d’un site de démonstration, un message envoyé depuis le formulaire n’aboutit chez aucun loueur : il est reçu par l’éditeur du site, {{legal.publisher.name}}, et supprimé. N’y inscrivez aucune donnée personnelle dont vous n’avez pas besoin.",
+                "Le texte ci-dessous décrit le traitement qui s’appliquerait sur un site réel.",
+                "Les informations transmises par le formulaire (nom, adresse électronique, téléphone, dates et composition du séjour, message) servent uniquement à répondre à votre demande et, le cas échéant, à établir un contrat de location.",
+                "Elles sont conservées trois ans à compter du dernier échange et ne font l’objet d’aucune cession à des tiers.",
+                "Conformément au RGPD, vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation et d’opposition. Écrivez à {{legal.operator.email}}. Vous pouvez saisir la CNIL."
+              ],
+              "en": [
+                "As this is a demonstration site, a message sent through the form reaches no rental business: it is received by the site’s publisher, {{legal.publisher.name}}, and deleted. Please do not enter personal data you do not need to.",
+                "The text below describes the processing that would apply on a real site.",
+                "Information submitted through the form (name, e-mail, telephone, dates and party details, message) is used solely to answer your request and, where applicable, to draw up a rental agreement.",
+                "It is kept for three years from the last exchange and is never sold or transferred to third parties.",
+                "Under the GDPR you have the right to access, rectify, erase, restrict and object. Write to {{legal.operator.email}}. You may also complain to the French data protection authority."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Cookies", "en": "Cookies" },
+            "body": {
+              "fr": [
+                "Ce site ne dépose aucun cookie publicitaire ni traceur d’audience. Aucun consentement n’est requis."
+              ],
+              "en": [
+                "This site sets no advertising cookies and no analytics trackers. No consent banner is required."
+              ]
+            }
+          }
+        ]
+      },
+      "cgv": {
+        "title": { "fr": "Conditions générales de vente", "en": "Terms and conditions" },
+        "updatedAt": "2026-08-01",
+        "sections": [
+          {
+            "title": { "fr": "Avertissement", "en": "Disclaimer" },
+            "body": {
+              "fr": [
+                "Ces conditions sont publiées à titre d’exemple sur un site de démonstration. Elles ne lient personne : {{identity.name}} est un gîte fictif."
+              ],
+              "en": [
+                "These terms are published as an example on a demonstration site. They bind no one: {{identity.name}} is a fictional cottage."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Objet", "en": "Purpose" },
+            "body": {
+              "fr": [
+                "Les présentes conditions régissent la location saisonnière meublée de {{identity.name}}, à {{location.commune}} ({{location.postalCode}}), enregistrée sous le numéro {{identity.registrationNumber}}.",
+                "Le logement est loué en totalité, pour {{capacity.guests}} personnes au maximum, à titre de résidence temporaire."
+              ],
+              "en": [
+                "These terms govern the seasonal furnished rental of {{identity.name}}, in {{location.commune}} ({{location.postalCode}}), registered under number {{identity.registrationNumber}}.",
+                "The whole property is let, for a maximum of {{capacity.guests}} guests, as temporary accommodation."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Réservation", "en": "Booking" },
+            "body": {
+              "fr": [
+                "Toute demande formulée depuis ce site est sans engagement. La réservation devient ferme au renvoi du contrat signé et au versement de l’acompte, dans les sept jours suivant l’envoi du contrat.",
+                "Passé ce délai, les dates sont remises à la vente."
+              ],
+              "en": [
+                "Any request made through this site is non-binding. A booking becomes firm once the signed agreement is returned and the deposit paid, within seven days of the agreement being sent.",
+                "After that period, the dates are released for sale again."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Tarifs et paiement", "en": "Rates and payment" },
+            "body": {
+              "fr": [
+                "Les tarifs s’entendent pour le gîte entier, ménage compris. La taxe de séjour s’ajoute et est collectée sur place.",
+                "Un acompte de {{rates.conditions.depositPercent}} est versé à la réservation, le solde {{rates.conditions.balanceDueDays}} jours avant l’arrivée.",
+                "Moyens de paiement : {{rates.conditions.payment}}."
+              ],
+              "en": [
+                "Rates are for the whole cottage, cleaning included. Tourist tax is added and collected on site.",
+                "A deposit of {{rates.conditions.depositPercent}} is paid on booking, the balance {{rates.conditions.balanceDueDays}} days before arrival.",
+                "Payment methods: {{rates.conditions.payment}}."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Dépôt de garantie", "en": "Security deposit" },
+            "body": {
+              "fr": [
+                "Un dépôt de garantie de {{rates.conditions.securityDeposit}} est constitué au plus tard le jour de l’arrivée. Il n’est pas encaissé si aucun dommage n’est constaté et il est libéré dans les sept jours suivant le départ."
+              ],
+              "en": [
+                "A security deposit of {{rates.conditions.securityDeposit}} is provided no later than the day of arrival. It is not cashed if no damage is found and is released within seven days of departure."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Annulation", "en": "Cancellation" },
+            "body": {
+              "fr": [
+                "À plus de {{rates.conditions.cancellationFreeDays}} jours de l’arrivée : acompte intégralement remboursé.",
+                "Entre {{rates.conditions.cancellationFreeDays}} et {{rates.conditions.balanceDueDays}} jours : l’acompte reste acquis au propriétaire.",
+                "À moins de {{rates.conditions.balanceDueDays}} jours ou non-présentation : la totalité du séjour reste due. Le propriétaire s’efforce de relouer et rembourse les nuits effectivement relouées.",
+                "En cas d’annulation du fait du propriétaire, l’intégralité des sommes versées est remboursée sous quinze jours."
+              ],
+              "en": [
+                "More than {{rates.conditions.cancellationFreeDays}} days before arrival: the deposit is refunded in full.",
+                "Between {{rates.conditions.cancellationFreeDays}} and {{rates.conditions.balanceDueDays}} days: the deposit is retained by the owner.",
+                "Less than {{rates.conditions.balanceDueDays}} days before arrival, or no-show: the full price remains payable. The owner will try to re-let and refunds any nights actually re-let.",
+                "If the owner cancels, all sums paid are refunded within fifteen days."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Usage des lieux", "en": "Use of the property" },
+            "body": {
+              "fr": [
+                "Le nombre d’occupants ne peut excéder {{capacity.guests}} personnes, sauf accord écrit préalable.",
+                "La sous-location, les fêtes et les événements sont interdits. Le logement est non-fumeur ; il est possible de fumer sur la terrasse et au jardin. Les animaux ne sont pas admis.",
+                "L’arrivée s’effectue à partir de {{capacity.checkInFrom}} et le départ avant {{capacity.checkOutBefore}}."
+              ],
+              "en": [
+                "The number of occupants may not exceed {{capacity.guests}}, unless agreed in writing beforehand.",
+                "Subletting, parties and events are prohibited. The property is non-smoking; smoking is permitted on the terrace and in the garden. Pets are not admitted.",
+                "Check-in is from {{capacity.checkInFrom}} and check-out before {{capacity.checkOutBefore}}."
+              ]
+            }
+          },
+          {
+            "title": { "fr": "Assurance et litiges", "en": "Insurance and disputes" },
+            "body": {
+              "fr": [
+                "Le locataire doit être assuré au titre de la villégiature (incendie, dégât des eaux, vol) et en responsabilité civile.",
+                "Toute réclamation est adressée par écrit à {{legal.operator.email}} dans les trente jours suivant la fin du séjour. À défaut d’accord amiable, un médiateur de la consommation peut être saisi. Le contrat est soumis au droit français."
+              ],
+              "en": [
+                "The tenant must hold holiday rental insurance (fire, water damage, theft) and personal liability cover.",
+                "Any complaint must be sent in writing to {{legal.operator.email}} within thirty days of the end of the stay. Failing an amicable settlement, a consumer mediator may be appointed. The agreement is governed by French law."
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "seo": {
+    "ogImage": "/og-image.jpg",
+    "twitterCard": "summary_large_image",
+    "pages": {
+      "home": {
+        "title": { "fr": "Kaz Lanmè — gîte 3 étoiles aux Anses-d’Arlet, Martinique", "en": "Kaz Lanmè — 3-star cottage in Les Anses-d’Arlet, Martinique" },
+        "description": { "fr": "Gîte de charme pour 4 personnes aux Anses-d’Arlet : 2 chambres, terrasse et petit jardin, à 5 minutes du bourg et des plages. Tarifs, disponibilités et réservation directe.", "en": "A charming 4-guest cottage in Les Anses-d’Arlet: 2 bedrooms, terrace and small garden, 5 minutes from the village and the beaches. Rates, availability and direct booking." }
+      },
+      "surroundings": {
+        "title": { "fr": "Les environs — bourg, plages et tortues | Kaz Lanmè", "en": "The area — village, beaches and turtles | Kaz Lanmè" },
+        "description": { "fr": "Le bourg et son église face au ponton, Grande Anse, Petite Anse et le snorkeling avec les tortues : nos adresses autour du gîte.", "en": "The village and its church facing the jetty, Grande Anse, Petite Anse and snorkelling with turtles: our recommendations around the cottage." }
+      },
+      "practical": {
+        "title": { "fr": "Infos pratiques — arrivée, accès, climat | Kaz Lanmè", "en": "Practical information — arrival, access, climate | Kaz Lanmè" },
+        "description": { "fr": "Horaires d’arrivée, accès depuis l’aéroport, saisons, moustiques et urgences : tout ce qu’il faut savoir avant votre séjour.", "en": "Check-in times, getting there from the airport, seasons, mosquitoes and emergencies: everything to know before your stay." }
+      },
+      "legal": {
+        "title": { "fr": "Mentions légales | Kaz Lanmè", "en": "Legal notice | Kaz Lanmè" },
+        "description": { "fr": "Éditeur, hébergement, propriété intellectuelle, données personnelles et cookies.", "en": "Publisher, hosting, intellectual property, personal data and cookies." }
+      },
+      "terms": {
+        "title": { "fr": "Conditions générales de vente | Kaz Lanmè", "en": "Terms and conditions | Kaz Lanmè" },
+        "description": { "fr": "Réservation, tarifs, dépôt de garantie, annulation et usage des lieux.", "en": "Booking, rates, security deposit, cancellation and use of the property." }
+      },
+      "thanks": {
+        "title": { "fr": "Demande envoyée | Kaz Lanmè", "en": "Request sent | Kaz Lanmè" },
+        "description": { "fr": "Votre demande est bien reçue. Nous confirmons sous 24 heures.", "en": "We have your request. We confirm within 24 hours." }
+      }
+    }
+  }
+}

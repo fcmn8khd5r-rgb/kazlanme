@@ -1,0 +1,70 @@
+---
+/**
+ * Aperçu des environs sur l'accueil : une mosaïque de tailles franchement
+ * différentes, qui apparaît en cascade. Le détail est sur la page dédiée.
+ */
+import { Picture } from 'astro:assets';
+import gite from '../data/gite.json';
+import { t, ui, route, type Lang } from '../i18n';
+import { img } from '../lib/images';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { surroundings } = gite;
+
+/* Une vedette, une haute, deux moitiés : c'est l'irrégularité qui fait la
+   mosaïque. Les tailles suivent l'ordre des lieux dans gite.json. */
+const SHAPES = ['lead', 'tall', 'half', 'half'] as const;
+const RATIOS = ['frame--3x2', 'frame--3x4', 'frame--4x3', 'frame--4x3'] as const;
+---
+
+<section class="section section--mist" id="environs">
+  <div class="shell">
+    <SectionHead
+      eyebrow={t(surroundings.eyebrow, lang)}
+      title={t(surroundings.title, lang)}
+      intro={t(surroundings.intro, lang)}
+    />
+
+    <ul class="mosaic">
+      {
+        surroundings.places.map((place, index) => (
+          <li
+            class:list={['mosaic__item', `mosaic__item--${SHAPES[index] ?? 'half'}`, 'reveal', 'reveal--media']}
+            style={`--i:${index}`}
+          >
+            <a href={route('surroundings', lang)}>
+              <div class:list={['frame', RATIOS[index] ?? 'frame--4x3', 'zoom']}>
+                <Picture
+                  src={img(place.image)}
+                  alt={t(place.alt, lang)}
+                  widths={[360, 560, 820, 1200]}
+                  sizes="(min-width: 52em) 46vw, 48vw"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  quality={76}
+                  loading="lazy"
+                />
+              </div>
+              <p class="caption">
+                <strong>{t(place.name, lang)}</strong> — {t(place.time, lang)}
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="btn-row reveal reveal--side">
+      <a class="link" href={route('surroundings', lang)}>
+        {ui('seeArea', lang)}
+        <Icon name="arrow-right" />
+      </a>
+    </div>
+  </div>
+</section>

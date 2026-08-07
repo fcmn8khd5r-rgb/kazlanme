@@ -1,0 +1,33 @@
+{
+  "name": "gite-anses-darlet",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Modèle de site de réservation directe pour un gîte — contenu centralisé dans src/data/gite.json",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "photos": "node scripts/photos.mjs",
+    "format:data": "node scripts/format-data.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.13.0",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true,
+    "sharp@0.34.5": true
+  }
+}

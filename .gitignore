@@ -1,0 +1,26 @@
+# build
+dist/
+.astro/
+
+# dépendances
+node_modules/
+
+# environnement
+.env
+.env.production
+.netlify/
+
+# système
+.DS_Store
+Thumbs.db
+
+# éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# journaux
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*

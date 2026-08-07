@@ -1,0 +1,237 @@
+---
+/**
+ * Calendrier des disponibilités.
+ *
+ * Le HTML est complet dès le build : douze mois, avec les périodes bloquées à
+ * la main. Le navigateur ne fait ensuite que deux choses — déplacer la fenêtre
+ * de trois mois, et compléter les nuits prises depuis /api/disponibilites.
+ * Si cet appel échoue, le calendrier reste tel qu'il a été écrit.
+ */
+import gite from '../data/gite.json';
+import { t, ui, monthName, weekdayInitials, weekdayNames, type Lang } from '../i18n';
+import { manualBooked, upcomingMonths } from '../lib/availability';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { availability } = gite;
+
+const booked = manualBooked();
+const months = upcomingMonths(availability.monthsAhead, booked);
+const initials = weekdayInitials(lang);
+const names = weekdayNames(lang);
+---
+
+<section class="section" id="calendrier">
+  <div class="shell">
+    <SectionHead
+      eyebrow={t(availability.eyebrow, lang)}
+      title={t(availability.title, lang)}
+      intro={t(availability.intro, lang)}
+    />
+
+    <div
+      class="calendar reveal reveal--side"
+      data-calendar
+      data-unavailable={t(availability.unavailable, lang)}
+    >
+      <div class="calendar__bar">
+        <div class="calendar__legend">
+          <span><i></i>{ui('calendarFree', lang)}</span>
+          <span><i class="is-booked"></i>{ui('calendarBooked', lang)}</span>
+        </div>
+
+        <div class="calendar__nav">
+          <button type="button" data-step="-1" aria-label={ui('calendarPrev', lang)} disabled>
+            <Icon name="chevron-left" />
+          </button>
+          <button type="button" data-step="1" aria-label={ui('calendarNext', lang)} disabled>
+            <Icon name="chevron-right" />
+          </button>
+        </div>
+      </div>
+
+      <div class="calendar__months" data-months>
+        {
+          months.map((month, index) => (
+            <div class="month" data-month={index} hidden={index >= 3}>
+              <p class="month__name">
+                {monthName(month.month, lang)} {month.year}
+              </p>
+              <div class="month__grid" role="grid">
+                {initials.map((initial, day) => (
+                  <span class="month__wd" role="columnheader" aria-label={names[day]}>
+                    {initial}
+                  </span>
+                ))}
+                {month.cells.map((cell) =>
+                  cell.day === null ? (
+                    <span class="day day--pad" aria-hidden="true" />
+                  ) : (
+                    <span
+                      class:list={[
+                        'day',
+                        cell.booked ? 'day--booked' : cell.past ? 'day--past' : 'day--free',
+                      ]}
+                      data-day={cell.key}
+                      role="gridcell"
+                      tabindex={!cell.booked && !cell.past ? 0 : undefined}
+                      aria-disabled={cell.booked || cell.past ? 'true' : undefined}
+                    >
+                      {cell.day}
+                    </span>
+                  ),
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="calendar__foot">
+        <p>{ui('calendarPick', lang)}</p>
+        <p data-updated data-label={`${ui('calendarUpdated', lang)} `} hidden></p>
+      </div>
+
+      <p class="calendar__warning" data-warning hidden></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ------------------------------------------------------------------
+     Le calendrier fonctionne déjà sans ce script : il n'ajoute que la
+     navigation, la mise à jour depuis les plateformes, et le report des
+     dates dans le formulaire.
+     ------------------------------------------------------------------ */
+  const root = document.querySelector<HTMLElement>('[data-calendar]');
+
+  if (root) {
+    const wrap = root.querySelector<HTMLElement>('[data-months]')!;
+    const months = [...wrap.querySelectorAll<HTMLElement>('[data-month]')];
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-step]')];
+    const warning = root.querySelector<HTMLElement>('[data-warning]')!;
+    const updated = root.querySelector<HTMLElement>('[data-updated]')!;
+
+    /* Le nombre de mois affichés suit les colonnes réellement dessinées par la
+       CSS. Une seule source de vérité, donc aucun risque de désaccord entre la
+       mise en page et le pas de navigation. */
+    const perView = () => {
+      const columns = getComputedStyle(wrap).gridTemplateColumns.split(' ').filter(Boolean).length;
+      return Math.max(1, Math.min(columns, months.length));
+    };
+
+    let first = 0;
+
+    function render() {
+      const size = perView();
+      first = Math.max(0, Math.min(first, months.length - size));
+      months.forEach((month, index) => {
+        month.hidden = index < first || index >= first + size;
+      });
+      buttons[0].disabled = first === 0;
+      buttons[1].disabled = first + size >= months.length;
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        first += Number(button.dataset.step) * perView();
+        render();
+      });
+    });
+
+    addEventListener('resize', render, { passive: true });
+    render();
+
+    /* --------------------------------------------------------------
+       Report d'une date vers le formulaire.
+       Le formulaire est plus bas dans le document : il n'est pas encore
+       analysé quand ce script s'exécute. On relit donc les champs à
+       chaque clic plutôt que de garder une référence prise trop tôt.
+       -------------------------------------------------------------- */
+    const fields = () => ({
+      arrival: document.querySelector<HTMLInputElement>('#arrivee'),
+      departure: document.querySelector<HTMLInputElement>('#depart'),
+    });
+
+    function choose(key: string) {
+      const { arrival, departure } = fields();
+      if (!arrival || !departure) return;
+
+      /* Premier clic : l'arrivée. Deuxième : le départ, s'il est postérieur. */
+      if (!arrival.value || (departure.value && arrival.value) || key < arrival.value) {
+        arrival.value = key;
+        departure.value = '';
+      } else {
+        departure.value = key;
+      }
+
+      root!.querySelectorAll('.day--picked').forEach((cell) => cell.classList.remove('day--picked'));
+      for (const value of [arrival.value, departure.value]) {
+        if (value) root!.querySelector(`[data-day="${value}"]`)?.classList.add('day--picked');
+      }
+      arrival.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    wrap.addEventListener('click', (event) => {
+      const cell = (event.target as HTMLElement).closest<HTMLElement>('.day--free');
+      if (cell?.dataset.day) choose(cell.dataset.day);
+    });
+
+    wrap.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const cell = (event.target as HTMLElement).closest<HTMLElement>('.day--free');
+      if (!cell?.dataset.day) return;
+      event.preventDefault();
+      choose(cell.dataset.day);
+    });
+
+    /* --------------------------------------------------------------
+       Mise à jour depuis les plateformes.
+       Tout échec est silencieux : le calendrier du build reste valable,
+       et un message n'apparaît que si le serveur signale lui-même qu'un
+       flux déclaré est injoignable.
+       -------------------------------------------------------------- */
+    (async () => {
+      try {
+        const response = await fetch('/api/disponibilites', {
+          signal: AbortSignal.timeout(9000),
+          headers: { accept: 'application/json' },
+        });
+        if (!response.ok) return;
+
+        const data = (await response.json()) as {
+          booked?: string[];
+          sources?: number;
+          failures?: { source: string }[];
+          updatedAt?: string;
+        };
+
+        for (const key of data.booked ?? []) {
+          const cell = root!.querySelector<HTMLElement>(`[data-day="${key}"]`);
+          if (!cell || cell.classList.contains('day--past')) continue;
+          cell.classList.remove('day--free', 'day--picked');
+          cell.classList.add('day--booked');
+          cell.setAttribute('aria-disabled', 'true');
+          cell.removeAttribute('tabindex');
+        }
+
+        if (data.failures?.length) {
+          warning.textContent = root!.dataset.unavailable ?? '';
+          warning.hidden = false;
+        } else if (data.sources && data.updatedAt) {
+          const stamp = new Date(data.updatedAt);
+          updated.textContent = `${updated.dataset.label ?? ''}${stamp.toLocaleDateString()}`;
+          updated.hidden = false;
+        }
+      } catch {
+        /* Hors ligne, en développement, ou fonction indisponible :
+           on garde le calendrier tel qu'il a été écrit au build. */
+      }
+    })();
+  }
+</script>

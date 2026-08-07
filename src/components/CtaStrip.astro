@@ -1,0 +1,24 @@
+---
+/** Rappel de réservation en bas des pages intérieures. */
+import gite from '../data/gite.json';
+import { t, ui, route, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const home = route('home', lang);
+---
+
+<section class="section section--deep">
+  <div class="shell cta-strip reveal reveal--side">
+    <span class="eyebrow">{t(gite.booking.eyebrow, lang)}</span>
+    <h2>{t(gite.booking.title, lang)}</h2>
+    <p>{t(gite.booking.intro, lang)}</p>
+    <div class="btn-row" style="margin-top: 0.5rem;">
+      <a class="btn btn--light" href={`${home}#reserver`}>{ui('book', lang)}</a>
+      <a class="btn btn--onDark" href={`${home}#calendrier`}>{ui('navCalendar', lang)}</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kaz-lanme.netlify.app/sitemap.xml

@@ -1,0 +1,66 @@
+---
+/** L'équipement, adossé à une image — on ne laisse jamais une liste seule. */
+import { Picture } from 'astro:assets';
+import gite from '../data/gite.json';
+import { t, ui, type Lang } from '../i18n';
+import { img } from '../lib/images';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { amenities } = gite;
+---
+
+<section class="section" id="equipement">
+  <div class="shell">
+    <SectionHead
+      eyebrow={t(amenities.eyebrow, lang)}
+      title={t(amenities.title, lang)}
+      intro={t(amenities.intro, lang)}
+    />
+
+    <div class="amenities">
+      <div class="reveal reveal--media">
+        <div class="frame frame--5x7 zoom">
+          <Picture
+            src={img(amenities.image)}
+            alt={t(amenities.alt, lang)}
+            widths={[420, 640, 900, 1200]}
+            sizes="(min-width: 60em) 40vw, 92vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={78}
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="amenities__grid">
+          {
+            amenities.groups.map((group, index) => (
+              <div class="amenity reveal reveal--side" style={`--i:${index}`}>
+                <h3>{t(group.title, lang)}</h3>
+                <ul>
+                  {t(group.items, lang).map((item: string) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="rules reveal reveal--side">
+          <h3>{ui('houseRules', lang)}</h3>
+          <ul>
+            {t(amenities.restrictions, lang).map((rule: string) => <li>{rule}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

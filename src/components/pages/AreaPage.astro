@@ -1,0 +1,71 @@
+---
+/** LES ENVIRONS — quatre lieux, chacun avec son image, en alternance. */
+import { Picture } from 'astro:assets';
+import gite from '../../data/gite.json';
+import { t, type Lang } from '../../i18n';
+import { img } from '../../lib/images';
+import CtaStrip from '../CtaStrip.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { surroundings } = gite;
+---
+
+<section class="pagehead">
+  <div class="pagehead__media">
+    <Picture
+      src={img('grande-anse.jpg')}
+      alt={t(surroundings.places[1].alt, lang)}
+      widths={[640, 960, 1400, 1920]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      quality={76}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="pagehead__veil" aria-hidden="true"></div>
+  <div class="shell">
+    <span class="eyebrow">{t(surroundings.eyebrow, lang)}</span>
+    <h1>{t(surroundings.title, lang)}</h1>
+    <p>{t(surroundings.intro, lang)}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="places">
+      {
+        surroundings.places.map((place, index) => (
+          <article class="place">
+            <div class="place__media reveal reveal--media">
+              <div class:list={['frame', index % 2 === 0 ? 'frame--4x3' : 'frame--3x2', 'zoom']}>
+                <Picture
+                  src={img(place.image)}
+                  alt={t(place.alt, lang)}
+                  widths={[480, 720, 1000, 1400]}
+                  sizes="(min-width: 54em) 56vw, 92vw"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  quality={78}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div class="place__body reveal reveal--side" style="--i:1">
+              <span class="place__time">{t(place.time, lang)}</span>
+              <h2>{t(place.name, lang)}</h2>
+              <p>{t(place.text, lang)}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<CtaStrip lang={lang} />

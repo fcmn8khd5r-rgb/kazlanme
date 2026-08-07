@@ -1,0 +1,293 @@
+---
+/**
+ * Gabarit commun à toutes les pages : en-tête de document, en-tête visible,
+ * pied de page, et les trois comportements du site (état de l'en-tête,
+ * révélation au défilement, parallaxe).
+ */
+import gite from '../data/gite.json';
+import { t, ui, route, HTML_LANG, type Lang, type RouteKey } from '../i18n';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+  /** Page ouverte par un visuel plein cadre : l'en-tête démarre transparent. */
+  hasHero?: boolean;
+  /** Couleur de la barre d'état sur iPhone — celle du haut de la page. */
+  themeColor?: string;
+  bodyClass?: string;
+}
+
+const {
+  lang,
+  routeKey,
+  title,
+  description,
+  hasHero = false,
+  themeColor = '#12303d',
+  bodyClass,
+} = Astro.props;
+
+const base = gite.site.url.replace(/\/$/, '');
+const canonical = base + route(routeKey, lang);
+const ogImage = base + gite.seo.ogImage;
+
+/* Fiche structurée — c'est elle que lisent les moteurs pour afficher le type
+   d'hébergement, la capacité et la position. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BedAndBreakfast',
+  name: gite.identity.name,
+  description: t(gite.seo.pages.home.description, lang),
+  url: canonical,
+  image: ogImage,
+  inLanguage: HTML_LANG[lang],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: gite.location.commune,
+    postalCode: gite.location.postalCode,
+    addressRegion: gite.location.region,
+    addressCountry: gite.location.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: gite.location.latitude,
+    longitude: gite.location.longitude,
+  },
+  numberOfRooms: gite.capacity.bedrooms,
+  occupancy: { '@type': 'QuantitativeValue', maxValue: gite.capacity.guests },
+  petsAllowed: false,
+  smokingAllowed: false,
+  checkinTime: gite.capacity.checkInFrom,
+  checkoutTime: gite.capacity.checkOutBefore,
+  starRating: { '@type': 'Rating', ratingValue: 3, bestRating: 5 },
+  priceRange: '€€',
+};
+---
+
+<!doctype html>
+<html lang={HTML_LANG[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover : la page passe sous l'encoche, et c'est
+         env(safe-area-inset-*) qui replace le contenu au bon endroit. Sans
+         cela, une bande claire reste derrière la barre d'état de l'iPhone. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content={themeColor} />
+    <meta name="color-scheme" content="light" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="alternate" hreflang="fr-FR" href={base + route(routeKey, 'fr')} />
+    <link rel="alternate" hreflang="en-GB" href={base + route(routeKey, 'en')} />
+    <link rel="alternate" hreflang="x-default" href={base + route(routeKey, 'fr')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={gite.identity.name} />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content={gite.seo.twitterCard} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+    <!-- Les styles de révélation sont conditionnés à cette classe. Sans
+         JavaScript, rien ne se cache : la page s'affiche telle quelle. Le
+         script est ici, en tête, pour qu'aucun contenu ne clignote. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body class={bodyClass} data-hero={hasHero ? 'true' : 'false'}>
+    <a class="skip" href="#contenu">{ui('skipToContent', lang)}</a>
+    <Header lang={lang} routeKey={routeKey} />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <script>
+      /* --------------------------------------------------------------
+         1. État de l'en-tête.
+         Transparent tant qu'on est sur le visuel d'ouverture, opaque
+         ensuite. Une sentinelle observée vaut mieux qu'un écouteur de
+         défilement : le navigateur ne rappelle le code qu'au franchissement.
+         -------------------------------------------------------------- */
+      const header = document.querySelector<HTMLElement>('.header');
+      const overHero = document.body.dataset.hero === 'true';
+
+      if (header) {
+        if (!overHero) {
+          header.dataset.mode = 'solid';
+        } else {
+          const sentinel = document.createElement('div');
+          sentinel.setAttribute('aria-hidden', 'true');
+          sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:60vh;pointer-events:none';
+          document.body.prepend(sentinel);
+
+          const watcher = new IntersectionObserver(
+            ([entry]) => {
+              header.dataset.mode = entry.isIntersecting ? 'over' : 'solid';
+            },
+            { threshold: 0 },
+          );
+          watcher.observe(sentinel);
+          header.dataset.mode = 'over';
+        }
+      }
+
+      /* --------------------------------------------------------------
+         2. Panneau de navigation mobile.
+         -------------------------------------------------------------- */
+      const burger = document.querySelector<HTMLButtonElement>('.burger');
+      const drawer = document.querySelector<HTMLElement>('.drawer');
+
+      function setDrawer(open: boolean) {
+        if (!burger || !drawer) return;
+        drawer.dataset.open = String(open);
+        burger.setAttribute('aria-expanded', String(open));
+        document.body.dataset.locked = String(open);
+      }
+
+      burger?.addEventListener('click', () => {
+        setDrawer(drawer?.dataset.open !== 'true');
+      });
+
+      /* Un lien du panneau pointe vers une ancre : on referme d'abord, sinon
+         le défilement se fait sous un panneau resté ouvert. */
+      drawer?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setDrawer(false));
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && drawer?.dataset.open === 'true') setDrawer(false);
+      });
+
+      /* --------------------------------------------------------------
+         3. Révélation au défilement.
+         Un seul observateur pour toute la page. Chaque élément n'est
+         déclenché qu'une fois, puis on cesse de l'observer.
+
+         Le seuil est à zéro, volontairement : un seuil en surface rend le
+         mécanisme dépendant de la surface visible de la cible, et donc
+         fragile dès qu'un style la réduit. Le décalage bas suffit à retarder
+         l'apparition jusqu'à ce que l'élément entre franchement dans l'écran.
+         -------------------------------------------------------------- */
+      const revealables = document.querySelectorAll<HTMLElement>('.reveal');
+      const show = (element: Element) => ((element as HTMLElement).dataset.shown = '');
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && revealables.length) {
+        const shower = new IntersectionObserver(
+          (entries, observer) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              show(entry.target);
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+        );
+
+        for (const element of revealables) {
+          /* Déjà à l'écran au chargement : on montre tout de suite, sans
+             attendre un défilement qui pourrait ne jamais venir. */
+          const box = element.getBoundingClientRect();
+          if (box.top < window.innerHeight * 0.92 && box.bottom > 0) {
+            show(element);
+          } else {
+            shower.observe(element);
+          }
+        }
+
+        /* Filet de sécurité : un élément resté caché alors qu'il occupe
+           l'écran signale que l'observateur ne l'a pas vu. On l'affiche
+           plutôt que de laisser un trou dans la page. */
+        addEventListener(
+          'scroll',
+          () => {
+            for (const element of revealables) {
+              if (element.dataset.shown !== undefined) continue;
+              const box = element.getBoundingClientRect();
+              if (box.top < window.innerHeight && box.bottom > 0) {
+                show(element);
+                shower.unobserve(element);
+              }
+            }
+          },
+          { passive: true },
+        );
+      } else {
+        revealables.forEach(show);
+      }
+
+      /* --------------------------------------------------------------
+         4. Parallaxe des bandeaux pleine largeur.
+         Boucle d'animation armée seulement quand un bandeau est visible :
+         aucun calcul quand ils sont hors champ. Le déplacement est déduit
+         du débordement réel du média, jamais d'une valeur devinée.
+         -------------------------------------------------------------- */
+      const bands = [...document.querySelectorAll<HTMLElement>('.band')];
+
+      if (bands.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const visible = new Set<HTMLElement>();
+        let ticking = false;
+
+        const place = () => {
+          for (const band of visible) {
+            const media = band.querySelector<HTMLElement>('.band__media');
+            if (!media) continue;
+            const room = Math.max(0, (media.offsetHeight - band.offsetHeight) / 2);
+            if (room < 1) {
+              media.style.transform = '';
+              continue;
+            }
+            const box = band.getBoundingClientRect();
+            /* -1 quand le bandeau entre par le bas, +1 quand il sort par le haut. */
+            const progress = (box.top + box.height / 2 - window.innerHeight / 2) /
+              ((window.innerHeight + box.height) / 2);
+            const clamped = Math.max(-1, Math.min(1, progress));
+            media.style.transform = `translate3d(0, ${(-clamped * room).toFixed(2)}px, 0)`;
+          }
+          ticking = false;
+        };
+
+        const request = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(place);
+        };
+
+        const gate = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) visible.add(entry.target as HTMLElement);
+              else visible.delete(entry.target as HTMLElement);
+            }
+            if (visible.size) request();
+          },
+          { rootMargin: '15% 0px' },
+        );
+
+        bands.forEach((band) => gate.observe(band));
+        addEventListener('scroll', request, { passive: true });
+        addEventListener('resize', request, { passive: true });
+        request();
+      }
+    </script>
+  </body>
+</html>

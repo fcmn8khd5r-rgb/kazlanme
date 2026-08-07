@@ -1,0 +1,58 @@
+---
+/**
+ * Les pièces, en défilement latéral.
+ *
+ * Le rail sort de la coquille pour toucher le bord de l'écran, mais il garde
+ * la gouttière en rembourrage intérieur : rien ne dépasse du document, donc
+ * aucune barre de défilement horizontale n'apparaît sur la page.
+ */
+import { Picture } from 'astro:assets';
+import gite from '../data/gite.json';
+import { t, ui, type Lang } from '../i18n';
+import { img } from '../lib/images';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { rooms } = gite;
+---
+
+<section class="section section--mist" id="pieces">
+  <div class="shell">
+    <SectionHead
+      eyebrow={t(rooms.eyebrow, lang)}
+      title={t(rooms.title, lang)}
+      intro={t(rooms.intro, lang)}
+    />
+  </div>
+
+  <ul class="rail" tabindex="0" aria-label={t(rooms.title, lang)}>
+    {
+      rooms.items.map((room, index) => (
+        <li class="rail__item reveal reveal--media" style={`--i:${Math.min(index, 4)}`}>
+          <div class="frame frame--3x4 zoom">
+            <Picture
+              src={img(room.image)}
+              alt={t(room.alt, lang)}
+              widths={[380, 560, 760, 1000]}
+              sizes="(min-width: 64em) 30rem, 78vw"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              quality={78}
+              loading="lazy"
+            />
+          </div>
+          <h3>{t(room.name, lang)}</h3>
+          <p>{t(room.note, lang)}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="shell">
+    <p class="rail__hint">{ui('scrollHint', lang)}</p>
+  </div>
+</section>

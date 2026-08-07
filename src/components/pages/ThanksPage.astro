@@ -1,0 +1,36 @@
+---
+/**
+ * Page d'arrivée après l'envoi du formulaire.
+ * Elle dit deux choses, et dans cet ordre : la demande est reçue, et elle
+ * n'est pas encore une réservation.
+ */
+import gite from '../../data/gite.json';
+import { t, ui, route, type Lang } from '../../i18n';
+import Icon from '../Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { booking, contact } = gite;
+---
+
+<section class="section thanks">
+  <div class="shell shell--narrow">
+    <div class="thanks__mark">
+      <Icon name="check" />
+    </div>
+    <h1>{t(booking.thanks.title, lang)}</h1>
+    <p style="margin-top: 1.35rem;">{t(booking.thanks.body, lang)}</p>
+
+    <p class="notfirm" style="text-align: left; margin-top: 2.25rem;">
+      {t(booking.notFirm, lang)}
+    </p>
+
+    <div class="btn-row" style="justify-content: center;">
+      <a class="btn btn--solid" href={route('home', lang)}>{ui('backHome', lang)}</a>
+      <a class="btn btn--line" href={`mailto:${contact.email}`}>{ui('writeToUs', lang)}</a>
+    </div>
+  </div>
+</section>

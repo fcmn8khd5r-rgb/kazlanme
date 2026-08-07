@@ -1,0 +1,108 @@
+---
+/**
+ * En-tête collant. Transparent au-dessus du visuel d'ouverture, opaque une
+ * fois défilé — le basculement est piloté par Base.astro.
+ *
+ * Le menu est décrit une seule fois ci-dessous et sert aussi bien à la barre
+ * du haut qu'au panneau mobile : les deux ne peuvent pas diverger.
+ */
+import gite from '../data/gite.json';
+import { ui, route, type Lang, type RouteKey, type UiKey } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  routeKey: RouteKey;
+}
+
+const { lang, routeKey } = Astro.props;
+const home = route('home', lang);
+
+type Entry =
+  | { kind: 'anchor'; id: string; label: UiKey; inBar: boolean }
+  | { kind: 'page'; to: RouteKey; label: UiKey; inBar: boolean };
+
+const MENU: Entry[] = [
+  { kind: 'anchor', id: 'maison', label: 'navHouse', inBar: true },
+  { kind: 'anchor', id: 'pieces', label: 'navRooms', inBar: true },
+  { kind: 'anchor', id: 'equipement', label: 'navAmenities', inBar: false },
+  { kind: 'anchor', id: 'tarifs', label: 'navRates', inBar: true },
+  { kind: 'anchor', id: 'calendrier', label: 'navCalendar', inBar: false },
+  { kind: 'page', to: 'surroundings', label: 'navSurroundings', inBar: true },
+  { kind: 'page', to: 'practical', label: 'navPractical', inBar: true },
+];
+
+/* Une ancre pointe vers l'accueil, quelle que soit la page où l'on se trouve. */
+const href = (entry: Entry) =>
+  entry.kind === 'anchor' ? `${home}#${entry.id}` : route(entry.to, lang);
+
+const isCurrent = (entry: Entry) => entry.kind === 'page' && entry.to === routeKey;
+---
+
+<header class="header">
+  <div class="shell header__inner">
+    <a class="header__brand" href={home}>
+      {gite.identity.name}
+      <small>{gite.location.commune}</small>
+    </a>
+
+    <nav class="nav" aria-label={ui('mainNav', lang)}>
+      {
+        MENU.filter((entry) => entry.inBar).map((entry) => (
+          <a
+            class="nav__link"
+            href={href(entry)}
+            aria-current={isCurrent(entry) ? 'page' : undefined}
+          >
+            {ui(entry.label, lang)}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header__actions">
+      <div class="lang">
+        <a
+          class="lang__btn"
+          href={route(routeKey, 'fr')}
+          aria-current={lang === 'fr' ? 'true' : undefined}
+          hreflang="fr"
+          lang="fr"
+          title={ui('switchToFrench', lang)}>fr</a
+        >
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <a
+          class="lang__btn"
+          href={route(routeKey, 'en')}
+          aria-current={lang === 'en' ? 'true' : undefined}
+          hreflang="en"
+          lang="en"
+          title={ui('switchToEnglish', lang)}>en</a
+        >
+      </div>
+
+      <a class="btn btn--line nav__cta" href={`${home}#reserver`}>{ui('navBook', lang)}</a>
+
+      <button
+        class="burger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        aria-label={ui('menu', lang)}
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="menu-mobile" data-open="false">
+  {
+    MENU.map((entry, index) => (
+      <a href={href(entry)} aria-current={isCurrent(entry) ? 'page' : undefined}>
+        {ui(entry.label, lang)}
+        <span>{String(index + 1).padStart(2, '0')}</span>
+      </a>
+    ))
+  }
+  <a class="btn btn--solid" href={`${home}#reserver`}>{ui('navBook', lang)}</a>
+</div>

@@ -1,0 +1,86 @@
+---
+/**
+ * Bloc texte + image. Trois dispositions, décrites dans gite.json :
+ *   image-left  — image à gauche, texte à droite
+ *   image-right — l'inverse
+ *   band        — bandeau pleine largeur avec une phrase, et un parallaxe léger
+ *
+ * C'est ce composant qui tient la règle de composition du site : aucun bloc
+ * de texte sans visuel, aucune image sans propos.
+ */
+import { Picture } from 'astro:assets';
+import { t, type Lang } from '../i18n';
+import { img } from '../lib/images';
+
+interface Block {
+  id: string;
+  layout: 'image-left' | 'image-right' | 'band';
+  image: string;
+  alt: { fr: string; en: string };
+  eyebrow?: { fr: string; en: string };
+  title?: { fr: string; en: string };
+  text?: { fr: string[]; en: string[] };
+  line?: { fr: string; en: string };
+  credit?: { fr: string; en: string };
+}
+
+interface Props {
+  block: Block;
+  lang: Lang;
+  /** Décale les révélations pour que le texte suive l'image. */
+  index?: number;
+}
+
+const { block, lang, index = 0 } = Astro.props;
+const source = img(block.image);
+const alt = t(block.alt, lang);
+---
+
+{
+  block.layout === 'band' ? (
+    <section class="band" id={block.id} aria-label={t(block.line ?? block.alt, lang)}>
+      <div class="band__media">
+        <Picture
+          src={source}
+          alt={alt}
+          widths={[640, 960, 1400, 1920, 2400]}
+          sizes="100vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          quality={76}
+          loading="lazy"
+        />
+      </div>
+      <div class="band__veil" aria-hidden="true" />
+      {block.line && <p class="band__line reveal">{t(block.line, lang)}</p>}
+      {block.credit && <p class="band__credit">{t(block.credit, lang)}</p>}
+    </section>
+  ) : (
+    <div
+      class:list={['story', block.layout === 'image-right' && 'story--right']}
+      id={block.id}
+    >
+      <div class="story__media reveal reveal--media" style={`--i:${index % 2}`}>
+        <div class="frame frame--4x3 zoom">
+          <Picture
+            src={source}
+            alt={alt}
+            widths={[480, 720, 1000, 1400]}
+            sizes="(min-width: 52em) 58vw, 92vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={78}
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="story__body reveal reveal--side" style={`--i:${(index % 2) + 1}`}>
+        {block.eyebrow && <span class="eyebrow">{t(block.eyebrow, lang)}</span>}
+        {block.title && <h2>{t(block.title, lang)}</h2>}
+        {block.text && t(block.text, lang).map((paragraph: string) => <p>{paragraph}</p>)}
+        <slot />
+      </div>
+    </div>
+  )
+}
