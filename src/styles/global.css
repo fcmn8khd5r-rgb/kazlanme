@@ -281,16 +281,20 @@ body {
 .section {
   padding-block: var(--section-y);
   position: relative;
-  /* Le navigateur saute la mise en page et la peinture des sections hors
-     écran. « auto » lui fait mémoriser la hauteur réelle après le premier
-     rendu ; la valeur de repli ne sert donc qu'au tout premier passage.
+  /* PAS de content-visibility: auto ici, et c'est délibéré.
 
-     1300 px n'est pas un chiffre rond choisi au hasard : c'est la hauteur
-     moyenne mesurée des sections de ce site sur un écran de téléphone (elles
-     vont de 630 à 2140 px). Avec 60vh, l'estimation était 61 % trop basse et
-     la hauteur du document changeait sous le doigt pendant le défilement. */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 1300px;
+     Essayé, mesuré, retiré. Sur ce site il a produit trois défauts :
+     la hauteur du document changeait pendant le défilement (les sections
+     vont de 630 à 2140 px, aucune estimation unique ne convient) ; le
+     calendrier se dimensionnait avant que sa grille existe ; et surtout,
+     une section non rendue empêche l'observateur de voir les blocs qu'elle
+     contient — donc de les révéler. Pour douze sections, l'économie ne
+     valait pas ce risque.
+
+     `contain: layout style` garde l'essentiel du bénéfice — les calculs
+     d'une section ne se propagent pas au reste de la page — sans jamais
+     empêcher un contenu d'exister. */
+  contain: layout style;
 }
 
 .section--tight {
@@ -2529,74 +2533,165 @@ body[data-locked='true'] {
 
 /* ------------------------------------------------------- 23. animations */
 
-/* Révélation au défilement.
+/* RÉVÉLATION AU DÉFILEMENT
    ---------------------------------------------------------------------------
-   RÈGLE À NE PAS ENFREINDRE : l'élément observé ne porte JAMAIS le masque.
+   Un principe, appris à nos dépens : le contenu ne doit jamais dépendre d'un
+   rappel de script pour devenir visible. Une animation qui commence par
+   cacher, et qui compte sur un événement pour dévoiler, transforme la moindre
+   défaillance — onglet en arrière-plan au chargement, script en retard,
+   observateur suspendu — en page blanche.
 
-   Un IntersectionObserver mesure la surface réellement visible. Un
-   `clip-path: inset(0 0 100%)` la réduit à zéro : l'élément devient invisible
-   à l'observateur censé le révéler, et reste caché pour toujours. Le masque
-   vit donc sur le cadre intérieur, tandis que l'élément observé ne se cache
-   qu'avec l'opacité et une translation — deux propriétés qui n'entrent pas
-   dans le calcul d'intersection.
+   D'où deux chemins, dans cet ordre :
 
-   Les styles ne s'appliquent que si JavaScript a répondu (classe « js » posée
-   dans l'en-tête) : sans lui, tout s'affiche normalement. */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(1.35rem);
-  transition:
-    opacity 620ms var(--ease-soft),
-    transform var(--reveal-ms) var(--ease-soft);
-  transition-delay: calc(var(--i, 0) * var(--stagger));
+   1. `animation-timeline: view()` — la progression de l'animation EST la
+      position de l'élément dans l'écran. Il n'y a pas d'événement à recevoir,
+      donc rien qui puisse manquer : si l'élément est à l'écran, l'animation
+      est à son terme, un point c'est tout. C'est le chemin normal.
+
+   2. Pour les navigateurs qui l'ignorent, l'ancien mécanisme à observateur,
+      doublé d'un filet en CSS pur qui affiche tout au bout de quatre
+      secondes quoi qu'il arrive.
+
+   Dans les deux cas, sans JavaScript du tout (pas de classe « js »), rien
+   n'est caché : la page s'affiche entière. */
+
+@keyframes reveal-entree {
+  from {
+    opacity: 0;
+    transform: translateY(1.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.js .reveal[data-shown] {
-  opacity: 1;
-  transform: none;
+@keyframes reveal-entree-cote {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* Images : un rideau glisse vers le bas et découvre la photo, pendant que le
-   cadrage se détend.
-   Le rideau est un panneau opaque qu'on rétrécit — donc une animation de
-   `transform` seule. La version précédente animait `clip-path` : joli, mais
-   c'est une propriété qui repasse par la peinture à chaque image, et qui
-   surtout rendait l'élément invisible à l'observateur chargé de le révéler.
-   Ici rien de tel : la boîte ne change jamais, seul un panneau se contracte. */
-.js .reveal--media {
-  transform: none;
+@keyframes rideau-ouvre {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
 }
 
-.js .reveal--media .frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: var(--curtain, var(--paper));
-  transform-origin: bottom;
-  transform: scaleY(1);
-  transition: transform var(--reveal-ms) var(--ease-soft);
-  transition-delay: calc(var(--i, 0) * var(--stagger));
-  pointer-events: none;
+@keyframes photo-detend {
+  from {
+    transform: scale(1.075);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
-.js .reveal--media[data-shown] .frame::after {
-  transform: scaleY(0);
+/* ---- Chemin 1 : piloté par le défilement, sans JavaScript ---- */
+
+@supports (animation-timeline: view()) {
+  .js .reveal {
+    animation: reveal-entree linear both;
+    animation-timeline: view();
+    /* La cascade ne se règle plus en millisecondes mais en décalage de plage :
+       chaque élément commence un peu plus tard dans sa propre entrée. */
+    animation-range: entry calc(var(--i, 0) * 7%) entry calc(58% + var(--i, 0) * 7%);
+  }
+
+  .js .reveal--side {
+    animation-name: reveal-entree-cote;
+  }
+
+  .js .reveal--media .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--curtain, var(--paper));
+    transform-origin: bottom;
+    pointer-events: none;
+    animation: rideau-ouvre linear both;
+    animation-timeline: view();
+    animation-range: entry calc(var(--i, 0) * 7%) entry calc(64% + var(--i, 0) * 7%);
+  }
+
+  .js .reveal--media img {
+    animation: photo-detend linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  /* La galerie latérale défile horizontalement : ses vues doivent se
+     découvrir sur l'axe où elles entrent réellement. */
+  .js .rail__item.reveal,
+  .js .rail__item.reveal .frame::after,
+  .js .rail__item.reveal img {
+    animation-timeline: view(inline);
+    animation-range: entry 0% entry 75%;
+  }
 }
 
-.js .reveal--media img {
-  transform: scale(1.075);
-  transition: transform 1500ms var(--ease-soft);
-  transition-delay: calc(var(--i, 0) * var(--stagger));
-}
+/* ---- Chemin 2 : repli à observateur, pour les navigateurs sans view() ---- */
 
-.js .reveal--media[data-shown] img {
-  transform: scale(1);
-}
+@supports not (animation-timeline: view()) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(1.35rem);
+    transition:
+      opacity 620ms var(--ease-soft),
+      transform var(--reveal-ms) var(--ease-soft);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+    /* Filet : si l'observateur ne répond jamais, le contenu paraît quand même.
+       L'animation ne coûte rien pendant son délai. */
+    animation: reveal-entree 1ms linear 4s both;
+  }
 
-/* Variante latérale, pour les colonnes de texte. */
-.js .reveal--side {
-  transform: translateY(1.75rem);
+  .js .reveal--side {
+    transform: translateY(1.75rem);
+  }
+
+  .js .reveal[data-shown] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .js .reveal--media .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--curtain, var(--paper));
+    transform-origin: bottom;
+    transform: scaleY(1);
+    transition: transform var(--reveal-ms) var(--ease-soft);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+    pointer-events: none;
+    animation: rideau-ouvre 1ms linear 4s both;
+  }
+
+  .js .reveal--media[data-shown] .frame::after {
+    transform: scaleY(0);
+    animation: none;
+  }
+
+  .js .reveal--media img {
+    transform: scale(1.075);
+    transition: transform 1500ms var(--ease-soft);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  .js .reveal--media[data-shown] img {
+    transform: scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2612,6 +2707,18 @@ body[data-locked='true'] {
     transition-duration: 0.001ms !important;
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Mouvement réduit : on coupe l'animation — y compris celle pilotée par le
+     défilement, d'où le animation-timeline: none — et on montre tout. */
+  .js .reveal,
+  .js .reveal--media,
+  .js .reveal--side,
+  .js .reveal--media .frame::after,
+  .js .reveal--media img {
+    animation: none !important;
+    animation-timeline: none !important;
+    transition: none !important;
   }
 
   .js .reveal,

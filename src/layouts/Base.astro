@@ -191,7 +191,16 @@ const jsonLd = {
       const revealables = document.querySelectorAll<HTMLElement>('.reveal');
       const show = (element: Element) => ((element as HTMLElement).dataset.shown = '');
 
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && revealables.length) {
+      /* Quand le navigateur sait animer sur le défilement, la CSS fait tout
+         et ce script n'a rien à faire : pas d'observateur, pas de rappel,
+         donc rien qui puisse manquer et laisser un bloc invisible. */
+      const pilotéParDéfilement = CSS.supports('animation-timeline: view()');
+
+      if (
+        !pilotéParDéfilement &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        revealables.length
+      ) {
         const shower = new IntersectionObserver(
           (entries, observer) => {
             for (const entry of entries) {
@@ -225,21 +234,15 @@ const jsonLd = {
           }
         };
 
-        /* Filet de sécurité, sans écouteur de défilement.
+        /* Filets, sans écouteur de défilement.
 
-           Les sections portent `content-visibility: auto` : tant qu'une section
-           est ignorée, son contenu n'est pas rendu et l'observateur ne peut pas
-           le voir. Le moment exact où elle se met à exister est celui où sa
-           taille change — un ResizeObserver s'en aperçoit donc précisément,
-           là où un observateur d'intersection peut passer à côté.
-
-           Une passe au chargement complète le dispositif pour ce qui est déjà
-           à l'écran. */
-        const veille = new ResizeObserver((entries) => {
-          for (const entry of entries) rattraper(entry.target);
+           Un observateur d'intersection ne travaille pas dans un onglet en
+           arrière-plan : une page ouverte puis laissée de côté peut donc
+           revenir au premier plan avec tout son contenu encore caché. On
+           rattrape au retour de visibilité, et une fois au chargement. */
+        addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') rattraper(document);
         });
-        document.querySelectorAll('.section').forEach((section) => veille.observe(section));
-
         addEventListener('load', () => rattraper(document));
       } else {
         revealables.forEach(show);

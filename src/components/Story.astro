@@ -40,6 +40,9 @@ const alt = t(block.alt, lang);
   block.layout === 'band' ? (
     <section class="band" id={block.id} aria-label={t(block.line ?? block.alt, lang)}>
       <div class="band__media">
+        {/* Qualité 52 : le bandeau est vu à travers un voile sombre et porte
+            une phrase par-dessus, le détail fin y est invisible. Cela divise
+            son poids par deux sans différence perceptible. */}
         <Picture
           src={source}
           alt={alt}
@@ -47,9 +50,6 @@ const alt = t(block.alt, lang);
           sizes="100vw"
           formats={['avif', 'webp']}
           fallbackFormat="jpg"
-          {/* Le bandeau est vu à travers un voile sombre et porte une phrase
-              par-dessus : le détail fin y est invisible. Une qualité basse
-              divise son poids par deux sans différence perceptible. */}
           quality={52}
           loading="lazy"
           fetchpriority="low"
@@ -75,6 +75,7 @@ const alt = t(block.alt, lang);
             fallbackFormat="jpg"
             quality={78}
             loading="lazy"
+            fetchpriority="low"
           />
         </div>
       </div>
