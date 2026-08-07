@@ -54,7 +54,7 @@
       "id": "maison",
       "layout": "image-right",
       "image": "02-sejour.jpg",
-      "alt": { "fr": "Le séjour ouvert sur la cuisine, grande table en bois et chaises en rotin", "en": "The living room open to the kitchen, large wooden table and rattan chairs" },
+      "alt": { "fr": "Le séjour, plancher de bois, grand canapé crème et baie ouverte sur la terrasse", "en": "The living room, timber floor, large cream sofa and an opening onto the terrace" },
       "eyebrow": { "fr": "La maison", "en": "The house" },
       "title": { "fr": "Une petite maison créole, tenue avec soin", "en": "A small Creole house, carefully kept" },
       "text": {
@@ -72,7 +72,7 @@
       "id": "vivre",
       "layout": "image-left",
       "image": "03-cuisine.jpg",
-      "alt": { "fr": "La cuisine, plan de travail en bois clair et tabourets en fibre tressée", "en": "The kitchen, pale wood worktop and woven fibre stools" },
+      "alt": { "fr": "La cuisine ouverte, plan de travail clair, suspensions en fibre tressée et fenêtre sur le jardin", "en": "The open kitchen, pale worktop, woven fibre pendant lights and a window onto the garden" },
       "eyebrow": { "fr": "Au quotidien", "en": "Day to day" },
       "title": { "fr": "On y cuisine, on y traîne", "en": "You cook here, you linger here" },
       "text": {
@@ -97,8 +97,8 @@
     {
       "id": "dehors",
       "layout": "image-right",
-      "image": "05-chambre-jardin.jpg",
-      "alt": { "fr": "La chambre sur le jardin : plancher de bois sombre, lit fait de frais, et une paroi vitrée qui donne sur les bananiers", "en": "The garden bedroom: dark timber floor, freshly made bed, and a glazed wall opening onto banana plants" },
+      "image": "08-jardin.jpg",
+      "alt": { "fr": "Le petit jardin : une pelouse, des marches de pierre et un rideau de palmiers", "en": "The small garden: a lawn, stone steps and a curtain of palms" },
       "eyebrow": { "fr": "Le jardin", "en": "The garden" },
       "title": { "fr": "Une terrasse et trois arbres", "en": "A terrace and three trees" },
       "text": {
@@ -116,51 +116,58 @@
   "rooms": {
     "eyebrow": { "fr": "Les pièces", "en": "The rooms" },
     "title": { "fr": "Faites le tour", "en": "Take a look round" },
-    "intro": { "fr": "Six vues, dans l’ordre où l’on traverse la maison. Faites défiler sur le côté.", "en": "Six views, in the order you walk through the house. Scroll sideways." },
+    "intro": { "fr": "Sept vues, dans l’ordre où l’on traverse la maison — une par pièce, rien de plus. Faites défiler sur le côté.", "en": "Seven views, in the order you walk through the house — one per room, no more. Scroll sideways." },
+    "$inventaire": "UNE PHOTO PAR PIÈCE RÉELLE. Le gîte a deux chambres, une cuisine, une salle d'eau : montrer deux cuisines ou trois chambres ferait mentir la page. Cette liste doit rester le reflet exact de ce que déclare « capacity », et les fichiers viennent du manifeste de scripts/photos.mjs.",
     "items": [
       {
         "image": "02-sejour.jpg",
         "name": { "fr": "Le séjour", "en": "The living room" },
-        "note": { "fr": "Table pour six, canapé, ventilateur", "en": "Table for six, sofa, ceiling fan" },
-        "alt": { "fr": "Le séjour et sa grande table en bois", "en": "The living room and its large wooden table" }
+        "note": { "fr": "Canapé, table pour six, ventilateur", "en": "Sofa, table for six, ceiling fan" },
+        "alt": { "fr": "Le séjour, plancher de bois, grand canapé crème et baie ouverte sur la terrasse", "en": "The living room, timber floor, large cream sofa and an opening onto the terrace" }
       },
       {
         "image": "03-cuisine.jpg",
         "name": { "fr": "La cuisine", "en": "The kitchen" },
-        "note": { "fr": "Ouverte, équipée, plan de travail en bois", "en": "Open, fully equipped, wooden worktop" },
-        "alt": { "fr": "La cuisine ouverte sur la pièce de vie", "en": "The kitchen open to the living area" }
+        "note": { "fr": "Ouverte sur la pièce de vie, entièrement équipée", "en": "Open to the living area, fully equipped" },
+        "alt": { "fr": "La cuisine ouverte, plan de travail clair, suspensions en fibre tressée et fenêtre sur le jardin", "en": "The open kitchen, pale worktop, woven fibre pendant lights and a window onto the garden" }
       },
       {
-        "image": "04-chambre-bleue.jpg",
-        "name": { "fr": "La chambre bleue", "en": "The blue bedroom" },
-        "note": { "fr": "Lit 160, tête de lit peinte, placard", "en": "160 cm bed, painted headboard, wardrobe" },
-        "alt": { "fr": "La chambre bleue, tête de lit turquoise et linge blanc", "en": "The blue bedroom, turquoise headboard and white linen" }
+        "image": "04-chambre-1.jpg",
+        "name": { "fr": "La première chambre", "en": "The first bedroom" },
+        "note": { "fr": "Lit 160, tête de lit en bois, placard", "en": "160 cm bed, timber headboard, wardrobe" },
+        "alt": { "fr": "La première chambre, tête de lit en bois, lampe en fibre tressée et fenêtre sur les palmiers", "en": "The first bedroom, timber headboard, woven fibre lamp and a window onto the palms" }
       },
       {
-        "image": "05-chambre-jardin.jpg",
-        "name": { "fr": "La chambre sur le jardin", "en": "The garden bedroom" },
+        "image": "05-chambre-2.jpg",
+        "name": { "fr": "La seconde chambre", "en": "The second bedroom" },
         "note": { "fr": "Lit 140, accès direct à la terrasse", "en": "140 cm bed, direct access to the terrace" },
-        "alt": { "fr": "La chambre sur le jardin et sa paroi vitrée ouverte sur la végétation", "en": "The garden bedroom and its glazed wall opening onto the greenery" }
+        "alt": { "fr": "La seconde chambre, grande baie sur la végétation et plancher de bois", "en": "The second bedroom, a large window onto the greenery and a timber floor" }
       },
       {
-        "image": "07-salle-eau.jpg",
+        "image": "06-salle-eau.jpg",
         "name": { "fr": "La salle d’eau", "en": "The shower room" },
         "note": { "fr": "Douche à l’italienne, eau chaude solaire", "en": "Walk-in shower, solar-heated water" },
-        "alt": { "fr": "La salle d’eau, douche et cloison de bois", "en": "The shower room, shower and timber screen" }
+        "alt": { "fr": "La salle d’eau, douche à l’italienne derrière une paroi de verre dépoli", "en": "The shower room, walk-in shower behind a frosted glass screen" }
       },
       {
-        "image": "06-chambre-rotin.jpg",
-        "name": { "fr": "Les détails", "en": "The details" },
-        "note": { "fr": "Rotin, coton, plantes vertes", "en": "Rattan, cotton, green plants" },
-        "alt": { "fr": "Détail d’un lit en rotin et de plantes vertes", "en": "Detail of a rattan bed and green plants" }
+        "image": "07-terrasse.jpg",
+        "name": { "fr": "La terrasse", "en": "The terrace" },
+        "note": { "fr": "Couverte, table pour quatre, deux transats", "en": "Covered, table for four, two loungers" },
+        "alt": { "fr": "La terrasse couverte, charpente de bois, banquettes crème et palmiers tout autour", "en": "The covered terrace, timber roof structure, cream seating and palms all around" }
+      },
+      {
+        "image": "08-jardin.jpg",
+        "name": { "fr": "Le jardin", "en": "The garden" },
+        "note": { "fr": "Un carré d’herbe, un manguier, deux cocotiers", "en": "A patch of grass, a mango tree, two coconut palms" },
+        "alt": { "fr": "Le petit jardin : une pelouse, des marches de pierre et un rideau de palmiers", "en": "The small garden: a lawn, stone steps and a curtain of palms" }
       }
     ]
   },
   "amenities": {
     "eyebrow": { "fr": "L’équipement", "en": "Amenities" },
     "title": { "fr": "Ce qui est là", "en": "What’s there" },
-    "image": "06-chambre-rotin.jpg",
-    "alt": { "fr": "Coin de chambre, lit en rotin et plantes vertes", "en": "Corner of a bedroom, rattan bed and green plants" },
+    "image": "07-terrasse.jpg",
+    "alt": { "fr": "La terrasse couverte, charpente de bois et banquettes crème", "en": "The covered terrace, timber roof structure and cream seating" },
     "intro": { "fr": "Rien de superflu, mais rien qui manque. Vous arrivez avec vos valises, c’est tout.", "en": "Nothing superfluous, nothing missing. You arrive with your suitcases, that’s all." },
     "groups": [
       {
@@ -259,8 +266,8 @@
     "eyebrow": { "fr": "Les tarifs", "en": "Rates" },
     "title": { "fr": "Clair et sans surprise", "en": "Clear, no surprises" },
     "currency": "EUR",
-    "image": "04-chambre-bleue.jpg",
-    "alt": { "fr": "La chambre bleue et sa tête de lit turquoise", "en": "The blue bedroom and its turquoise headboard" },
+    "image": "05-chambre-2.jpg",
+    "alt": { "fr": "La seconde chambre et sa grande baie sur la végétation", "en": "The second bedroom and its large window onto the greenery" },
     "seasons": [
       {
         "id": "haute",

@@ -1,33 +1,54 @@
 # Crédits photographiques
 
 Fichier **généré par `npm run photos`** à partir du manifeste de
-`scripts/photos.mjs`. Ne pas le modifier à la main.
+`scripts/photos.mjs`. Ne pas le modifier à la main : les crédits ne peuvent
+donc pas diverger des fichiers réellement livrés.
 
-Le gîte présenté sur ce site est fictif. Les photographies proviennent
-d'Unsplash et servent à figurer une maison plausible.
+Le gîte présenté sur ce site est fictif. Les photographies servent à figurer
+une maison plausible.
 
-Toutes sont publiées sous la **licence Unsplash** : usage commercial autorisé,
-modification et redistribution permises, attribution facultative. Aucune photo ne provient d'Unsplash+, dont
-la licence est payante et les conditions différentes ; le script refuse cette
-origine.
+## Comment cette sélection a été faite
 
-Texte de la licence : <https://unsplash.com/license>
+Chercher une photo par pièce donnait sept maisons différentes. Les images
+proviennent donc de **reportages complets** — un même photographe, une même
+maison, une même séance :
 
-> **Auteurs.** L'attribution est facultative sous licence Unsplash. Le nom de
-> l'auteur figure sur chaque page source liée ci-dessous ; il n'est reproduit
-> ici que lorsqu'il a été vérifié directement sur cette page.
+- **Alef Morais** — maison de bois tropicale : le séjour, la terrasse, le jardin
+- **Luis Zambrano** — maison d'enduit ocre : les deux chambres, la salle d'eau
+
+Les deux séries partagent le bois chaud, les suspensions en fibre tressée, les
+textiles crème et la végétation dense. La cuisine a été retenue sur ces mêmes
+critères de raccord.
+
+Toutes les photos du gîte sont ensuite **ramenées à une même référence
+colorimétrique** puis traitées à l'identique — contraste et désaturation
+communs. C'est ce qui fait tenir ensemble des images d'origines différentes.
+
+## Licences
+
+- **Unsplash** : usage commercial autorisé, modification et redistribution
+  permises, attribution facultative — <https://unsplash.com/license>
+- **Pexels** : usage commercial autorisé, modification permise, attribution
+  facultative — <https://www.pexels.com/license/>
+
+Aucune photo ne provient d'Unsplash+, dont la licence est payante ; le script
+refuse cette origine.
+
+> **Auteurs.** L'attribution est facultative sous les deux licences. Les noms
+> ci-dessous ont tous été relevés sur la page source, jamais devinés.
 
 ## Le gîte
 
-| Fichier | Rôle | Auteur | Source | Licence |
+| Fichier | Pièce | Auteur | Source | Licence |
 | --- | --- | --- | --- | --- |
 | `01-veranda.jpg` | Accueil — la véranda | Brooke Balentine | [unsplash.com/photos/zTVGO4IUmJg](https://unsplash.com/photos/zTVGO4IUmJg) | Licence Unsplash |
-| `02-sejour.jpg` | Le séjour et la table | _voir la page source_ | [unsplash.com/photos/GgAU5OaTAlA](https://unsplash.com/photos/GgAU5OaTAlA) | Licence Unsplash |
-| `03-cuisine.jpg` | La cuisine | _voir la page source_ | [unsplash.com/photos/AMHhBiWHQOM](https://unsplash.com/photos/AMHhBiWHQOM) | Licence Unsplash |
-| `04-chambre-bleue.jpg` | La chambre bleue | _voir la page source_ | [unsplash.com/photos/L9GsIbPCXKU](https://unsplash.com/photos/L9GsIbPCXKU) | Licence Unsplash |
-| `05-chambre-jardin.jpg` | La chambre sur le jardin | Marc Wieland | [unsplash.com/photos/RAXD1BlJmSs](https://unsplash.com/photos/RAXD1BlJmSs) | Licence Unsplash |
-| `06-chambre-rotin.jpg` | Détail — lit en rotin | _voir la page source_ | [unsplash.com/photos/jEW4REcKBn0](https://unsplash.com/photos/jEW4REcKBn0) | Licence Unsplash |
-| `07-salle-eau.jpg` | La salle d’eau | _voir la page source_ | [unsplash.com/photos/z5Qyv6um5Ow](https://unsplash.com/photos/z5Qyv6um5Ow) | Licence Unsplash |
+| `02-sejour.jpg` | Le séjour | Alef Morais | [pexels.com/photo/34277710](https://www.pexels.com/photo/34277710/) | Licence Pexels |
+| `03-cuisine.jpg` | La cuisine | Mia Dalisay | [pexels.com/photo/15948525](https://www.pexels.com/photo/15948525/) | Licence Pexels |
+| `04-chambre-1.jpg` | La première chambre | Luis Zambrano | [pexels.com/photo/16436912](https://www.pexels.com/photo/16436912/) | Licence Pexels |
+| `05-chambre-2.jpg` | La seconde chambre | Luis Zambrano | [pexels.com/photo/16436925](https://www.pexels.com/photo/16436925/) | Licence Pexels |
+| `06-salle-eau.jpg` | La salle d’eau | Luis Zambrano | [pexels.com/photo/16436961](https://www.pexels.com/photo/16436961/) | Licence Pexels |
+| `07-terrasse.jpg` | La terrasse couverte | Alef Morais | [pexels.com/photo/34277689](https://www.pexels.com/photo/34277689/) | Licence Pexels |
+| `08-jardin.jpg` | Le jardin | Luis Becerra Fotógrafo | [pexels.com/photo/15551721](https://www.pexels.com/photo/15551721/) | Licence Pexels |
 
 ## Les environs
 
@@ -42,7 +63,8 @@ Texte de la licence : <https://unsplash.com/license>
 
 **En livrant à un vrai client**, remplacer ces fichiers par les photographies du
 bien réel — mêmes noms de fichiers, rien d'autre à modifier — puis vider ces
-tableaux.
+tableaux. Les vraies photos d'une vraie maison rendent l'étalonnage commun
+inutile : elles raccordent d'elles-mêmes.
 
 ## Métadonnées
 
@@ -51,5 +73,4 @@ script le vérifie fichier par fichier et échoue si un marqueur subsiste.
 
 ## Polices
 
-Aucune police n'est téléchargée : le site s'appuie sur les piles système. Aucune
-requête réseau, aucune question de licence.
+Aucune police n'est téléchargée : le site s'appuie sur les piles système.
