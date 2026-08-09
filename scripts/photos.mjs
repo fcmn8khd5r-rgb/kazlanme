@@ -52,12 +52,19 @@ const LARGE_EDGE = 2600;
  * L'INVENTAIRE — une entrée par pièce réelle du gîte, dans l'ordre où on
  * traverse la maison.
  *
- * Provenance : deux reportages, choisis pour raccorder l'un à l'autre.
- *   · Alef Morais (Pexels) — maison de bois tropicale : le séjour, la terrasse
- *   · Luis Zambrano (Pexels) — maison d'enduit ocre : les deux chambres, la salle d'eau
- * Les deux partagent le bois chaud, les suspensions en fibre tressée, les
- * textiles crème et la végétation dense. La cuisine et le jardin ont été
- * retenus sur ces mêmes critères de raccord.
+ * LE CRITÈRE D'ÉCHELLE, avant tout autre : cette pièce peut-elle tenir dans
+ * 62 m² loués 700 € la semaine ? Un séjour cathédrale, une cuisine à îlot et
+ * tabourets, un salon d'extérieur : écartés, même beaux, même bien raccordés.
+ * Une première sélection y avait échoué — c'était une villa de standing.
+ * Les mots-clés qui marchent sont small, cozy, compact, guest house, bungalow,
+ * cottage ; ceux qui trompent sont villa, luxury, resort, open plan.
+ *
+ * Provenance : un reportage principal, complété au même registre.
+ *   · Jason Boyd (Pexels) — petit cottage tropical : le séjour, la première
+ *     chambre. Murs blancs à lattes, plancher de bois, ventilateur de plafond,
+ *     persiennes, verdure aux fenêtres.
+ * Les autres pièces ont été retenues sur ces mêmes critères de raccord, et
+ * uniquement si leur taille reste plausible pour un deux-pièces.
  *
  * @typedef {object} Photo
  * @property {string}  to        nom du fichier livré
@@ -91,29 +98,29 @@ const GITE = [
     to: '02-sejour.jpg',
     role: 'Le séjour',
     source: 'pexels',
-    id: '34277710',
-    author: 'Alef Morais',
+    id: '3209040',
+    author: 'Jason Boyd',
   },
   {
     to: '03-cuisine.jpg',
     role: 'La cuisine',
     source: 'pexels',
-    id: '15948525',
-    author: 'Mia Dalisay',
+    id: '34989785',
+    author: 'GALERI CREATOR',
   },
   {
     to: '04-chambre-1.jpg',
     role: 'La première chambre',
     source: 'pexels',
-    id: '16436912',
-    author: 'Luis Zambrano',
+    id: '3209035',
+    author: 'Jason Boyd',
   },
   {
     to: '05-chambre-2.jpg',
     role: 'La seconde chambre',
     source: 'pexels',
-    id: '16436925',
-    author: 'Luis Zambrano',
+    id: '28148278',
+    author: 'Keegan Checks',
   },
   {
     to: '06-salle-eau.jpg',
@@ -124,17 +131,17 @@ const GITE = [
   },
   {
     to: '07-terrasse.jpg',
-    role: 'La terrasse couverte',
+    role: 'La terrasse',
     source: 'pexels',
-    id: '34277689',
-    author: 'Alef Morais',
+    id: '5028910',
+    author: 'Evgenia Basyrova',
   },
   {
     to: '08-jardin.jpg',
     role: 'Le jardin',
     source: 'pexels',
-    id: '15551721',
-    author: 'Luis Becerra Fotógrafo',
+    id: '33692974',
+    author: 'Atika Zubery',
   },
 ];
 
@@ -337,16 +344,25 @@ une maison plausible.
 
 ## Comment cette sélection a été faite
 
-Chercher une photo par pièce donnait sept maisons différentes. Les images
-proviennent donc de **reportages complets** — un même photographe, une même
+**Premier critère : l'échelle.** Le gîte fait 62 m² et se loue 700 € la
+semaine. Chaque photo doit donc représenter une pièce qui peut plausiblement y
+tenir. Sont écartés, même beaux : les séjours à charpente cathédrale, les
+cuisines à îlot central et tabourets de bar, les salons d'extérieur, les
+pelouses. Les mots-clés qui donnent le bon calibre sont *small*, *cozy*,
+*compact*, *guest house*, *bungalow*, *cottage* ; ceux qui trompent sont
+*villa*, *luxury*, *resort*, *open plan*.
+
+**Second critère : la même maison.** Chercher une photo par pièce donne sept
+maisons différentes. On part donc de reportages — un même photographe, une même
 maison, une même séance :
 
-- **Alef Morais** — maison de bois tropicale : le séjour, la terrasse, le jardin
-- **Luis Zambrano** — maison d'enduit ocre : les deux chambres, la salle d'eau
+- **Jason Boyd** — petit cottage tropical : le séjour et la première chambre.
+  Murs blancs à lattes, plancher de bois, ventilateur de plafond, persiennes,
+  verdure aux fenêtres.
 
-Les deux séries partagent le bois chaud, les suspensions en fibre tressée, les
-textiles crème et la végétation dense. La cuisine a été retenue sur ces mêmes
-critères de raccord.
+Les autres pièces ont été retenues sur ces mêmes critères de raccord — teinte
+du bois, couleur des murs, sol, température de lumière, style du mobilier — et
+uniquement quand leur taille restait plausible pour un deux-pièces.
 
 Toutes les photos du gîte sont ensuite **ramenées à une même référence
 colorimétrique** puis traitées à l'identique — contraste et désaturation

@@ -9,16 +9,25 @@ une maison plausible.
 
 ## Comment cette sélection a été faite
 
-Chercher une photo par pièce donnait sept maisons différentes. Les images
-proviennent donc de **reportages complets** — un même photographe, une même
+**Premier critère : l'échelle.** Le gîte fait 62 m² et se loue 700 € la
+semaine. Chaque photo doit donc représenter une pièce qui peut plausiblement y
+tenir. Sont écartés, même beaux : les séjours à charpente cathédrale, les
+cuisines à îlot central et tabourets de bar, les salons d'extérieur, les
+pelouses. Les mots-clés qui donnent le bon calibre sont *small*, *cozy*,
+*compact*, *guest house*, *bungalow*, *cottage* ; ceux qui trompent sont
+*villa*, *luxury*, *resort*, *open plan*.
+
+**Second critère : la même maison.** Chercher une photo par pièce donne sept
+maisons différentes. On part donc de reportages — un même photographe, une même
 maison, une même séance :
 
-- **Alef Morais** — maison de bois tropicale : le séjour, la terrasse, le jardin
-- **Luis Zambrano** — maison d'enduit ocre : les deux chambres, la salle d'eau
+- **Jason Boyd** — petit cottage tropical : le séjour et la première chambre.
+  Murs blancs à lattes, plancher de bois, ventilateur de plafond, persiennes,
+  verdure aux fenêtres.
 
-Les deux séries partagent le bois chaud, les suspensions en fibre tressée, les
-textiles crème et la végétation dense. La cuisine a été retenue sur ces mêmes
-critères de raccord.
+Les autres pièces ont été retenues sur ces mêmes critères de raccord — teinte
+du bois, couleur des murs, sol, température de lumière, style du mobilier — et
+uniquement quand leur taille restait plausible pour un deux-pièces.
 
 Toutes les photos du gîte sont ensuite **ramenées à une même référence
 colorimétrique** puis traitées à l'identique — contraste et désaturation
@@ -42,13 +51,13 @@ refuse cette origine.
 | Fichier | Pièce | Auteur | Source | Licence |
 | --- | --- | --- | --- | --- |
 | `01-veranda.jpg` | Accueil — la véranda | Brooke Balentine | [unsplash.com/photos/zTVGO4IUmJg](https://unsplash.com/photos/zTVGO4IUmJg) | Licence Unsplash |
-| `02-sejour.jpg` | Le séjour | Alef Morais | [pexels.com/photo/34277710](https://www.pexels.com/photo/34277710/) | Licence Pexels |
-| `03-cuisine.jpg` | La cuisine | Mia Dalisay | [pexels.com/photo/15948525](https://www.pexels.com/photo/15948525/) | Licence Pexels |
-| `04-chambre-1.jpg` | La première chambre | Luis Zambrano | [pexels.com/photo/16436912](https://www.pexels.com/photo/16436912/) | Licence Pexels |
-| `05-chambre-2.jpg` | La seconde chambre | Luis Zambrano | [pexels.com/photo/16436925](https://www.pexels.com/photo/16436925/) | Licence Pexels |
+| `02-sejour.jpg` | Le séjour | Jason Boyd | [pexels.com/photo/3209040](https://www.pexels.com/photo/3209040/) | Licence Pexels |
+| `03-cuisine.jpg` | La cuisine | GALERI CREATOR | [pexels.com/photo/34989785](https://www.pexels.com/photo/34989785/) | Licence Pexels |
+| `04-chambre-1.jpg` | La première chambre | Jason Boyd | [pexels.com/photo/3209035](https://www.pexels.com/photo/3209035/) | Licence Pexels |
+| `05-chambre-2.jpg` | La seconde chambre | Keegan Checks | [pexels.com/photo/28148278](https://www.pexels.com/photo/28148278/) | Licence Pexels |
 | `06-salle-eau.jpg` | La salle d’eau | Luis Zambrano | [pexels.com/photo/16436961](https://www.pexels.com/photo/16436961/) | Licence Pexels |
-| `07-terrasse.jpg` | La terrasse couverte | Alef Morais | [pexels.com/photo/34277689](https://www.pexels.com/photo/34277689/) | Licence Pexels |
-| `08-jardin.jpg` | Le jardin | Luis Becerra Fotógrafo | [pexels.com/photo/15551721](https://www.pexels.com/photo/15551721/) | Licence Pexels |
+| `07-terrasse.jpg` | La terrasse | Evgenia Basyrova | [pexels.com/photo/5028910](https://www.pexels.com/photo/5028910/) | Licence Pexels |
+| `08-jardin.jpg` | Le jardin | Atika Zubery | [pexels.com/photo/33692974](https://www.pexels.com/photo/33692974/) | Licence Pexels |
 
 ## Les environs
 
