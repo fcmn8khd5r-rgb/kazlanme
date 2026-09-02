@@ -1,7 +1,7 @@
 # Déploiement Netlify — voir README.md, section « Mise en ligne ».
 
 [build]
-  command = "npm run build"
+  command = "npm run build && bash outils-domaine.sh"
   publish = "dist"
   functions = "netlify/functions"
 

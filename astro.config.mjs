@@ -2,11 +2,16 @@
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 
-// L'URL du site vit dans gite.json, comme le reste du contenu.
+// L'URL du site vit dans gite.json, comme le reste du contenu — mais l'hébergeur
+// a le dernier mot. Netlify expose l'adresse réelle du site dans $URL au
+// moment de construire : on la préfère, ce qui rend le dépôt indifférent au
+// nom qu'on donne au site. Sans cela, renommer le site ou en créer un second
+// laisserait chaque page déclarer une adresse canonique qui ne répond pas —
+// c'est le défaut que ces deux sites ont porté longtemps.
 const gite = JSON.parse(readFileSync(new URL('./src/data/gite.json', import.meta.url), 'utf-8'));
 
 export default defineConfig({
-  site: gite.site.url,
+  site: process.env.URL || gite.site.url,
   trailingSlash: 'always',
   i18n: {
     defaultLocale: 'fr',

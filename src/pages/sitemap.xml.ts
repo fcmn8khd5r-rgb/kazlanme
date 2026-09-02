@@ -7,7 +7,10 @@ import type { APIRoute } from 'astro';
 import gite from '../data/gite.json';
 import { ROUTES, LANGS, type Lang, type RouteKey } from '../i18n';
 
-const base = gite.site.url.replace(/\/$/, '');
+// L'adresse vient d'abord de l'hébergeur : import.meta.env.SITE reprend
+// « site » d'astro.config.mjs, qui suit $URL. Lue dans le JSON, elle
+// aurait laissé le plan du site désigner l'ancien domaine.
+const base = (import.meta.env.SITE ?? gite.site.url).replace(/\/$/, '');
 
 /* La page de remerciement n'a d'intérêt qu'après un envoi : on ne l'indexe pas. */
 const SKIP: RouteKey[] = ['thanks'];

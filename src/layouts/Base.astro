@@ -32,7 +32,10 @@ const {
   bodyClass,
 } = Astro.props;
 
-const base = gite.site.url.replace(/\/$/, '');
+// L'adresse vient d'abord de l'hébergeur (Astro.site suit $URL, voir
+// astro.config.mjs) et retombe sur la configuration à défaut. Lue
+// directement dans le JSON, elle ignorait le domaine réel du déploiement.
+const base = (Astro.site?.href ?? gite.site.url).replace(/\/$/, '');
 const canonical = base + route(routeKey, lang);
 const ogImage = base + gite.seo.ogImage;
 
