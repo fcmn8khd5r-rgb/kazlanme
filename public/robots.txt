@@ -1,4 +1,7 @@
+# L'adresse ci-dessous doit suivre site.url dans src/data/ : c'est le
+# seul endroit du dépôt où elle est écrite à la main. Elle a longtemps
+# désigné un domaine qui répondait 404.
 User-agent: *
 Allow: /
 
-Sitemap: https://kaz-lanme.netlify.app/sitemap.xml
+Sitemap: https://kazlanme.netlify.app/sitemap.xml

@@ -1,7 +1,7 @@
 {
   "$comment": "SOURCE UNIQUE DE VÉRITÉ — tout le contenu propre au gîte vit ici. Aucun texte de ce fichier n'est répété dans les composants. Voir README.md pour décliner le modèle sur un autre hébergement.",
   "site": {
-    "url": "https://kaz-lanme.netlify.app",
+    "url": "https://kazlanme.netlify.app",
     "defaultLang": "fr",
     "languages": ["fr", "en"],
     "demo": true,
@@ -507,7 +507,7 @@
       "name": "M. Bocage",
       "role": { "fr": "Éditeur du site", "en": "Site publisher" },
       "$email": "Facultatif. Sous la LCEN, un éditeur non professionnel peut ne pas publier ses coordonnées dès lors que l'hébergeur les détient. Renseigner cette clé pour faire apparaître une adresse de contact dans les mentions légales.",
-      "email": ""
+      "email": "contact@studiomathysbocage.fr"
     },
     "operator": {
       "name": "Sylvie Céleste",
